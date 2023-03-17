@@ -5,8 +5,10 @@
 @layer components {
   .sidebar-icon {
     @apply relative flex items-center justify-center
-           h-44 w-44 mt-2 mb-2 mx-auto
+           h-36 w-36 mt-6 mb-2 mx-auto
            shadow-lg
-           bg-blue-900 text-infored;
+           bg-blue-900 text-infored
+           hover:bg-infored hover:text-blue-900 hover:rounded-3xl hover:cursor-pointer
+           transition-all duration-300 ease-linear;
   }
 }
