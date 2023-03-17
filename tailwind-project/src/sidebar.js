@@ -16,18 +16,21 @@ const Sidebar = () => {
             </div>
             <p className='text-center'>User1234</p>
             <div className='h-1 bg-infored'></div>
-            <SidebarIcon Icon={<FaPoo size="60"/>}/>
-            <SidebarIcon Icon={<MdAttachMoney size="60"/>}/>
-            <SidebarIcon Icon={<BsFillPeopleFill size="60"/>}/>
-            <SidebarIcon Icon={<FaTasks size="60"/>}/>
+            <SidebarIcon Icon={<FaPoo size="60"/>} text='główny panel'/>
+            <SidebarIcon Icon={<MdAttachMoney size="60"/>} text='finanse'/>
+            <SidebarIcon Icon={<BsFillPeopleFill size="60"/>} text='pracownicy'/>
+            <SidebarIcon Icon={<FaTasks size="60"/>} text='zadania'/>
         </div>
     );
 };
 
-const SidebarIcon = ({Icon}) => {
+const SidebarIcon = ({Icon,text = "tooltip"}) => {
     return (
-    <div className="sidebar-icon">
+    <div className="sidebar-icon group">
         {Icon}
+        <span className='sidebar-tooltip group-hover:scale-100'>
+            {text}
+        </span>
     </div>
     );
 }
