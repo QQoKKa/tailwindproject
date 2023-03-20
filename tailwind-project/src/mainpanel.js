@@ -1,6 +1,9 @@
 const MainPanel = () => {
     let last_month = 1000;
     let this_month = 3000;
+    const best_employee = "Jan Kowalski";
+    const best_employee_salary = 3000;
+    const best_employee_tasks = 10;
     function calculateProfit() {
         return this_month - last_month;
     }
@@ -19,10 +22,15 @@ const MainPanel = () => {
                         <div className="bg-blue-500 w-[150px] h-[150px]
                                           rounded-full flex items-center justify-center
                                         text-white font-bold text-3xl 
-                                           border-green-700 border-4">{calculateProfitPercent()}%</div>
+                                        border-green-700 border-4">{calculateProfitPercent()}%</div>
                     </div>
                 </div>
-                <div className="gridpanel"> Najlepszy pracownik </div>
+                <div className="gridpanel"> Najlepszy pracownik 
+                <br></br>
+                Imię i nazwisko: {best_employee} <br></br>
+                Pensja: {best_employee_salary}zł <br></br>
+                Zadania wykonane: {best_employee_tasks}
+                </div>
                 <div className="gridpanel"> Aktualne zadania dla ciebie </div>
                 <div className="gridpanel"> Twoje wyniki </div>
 
