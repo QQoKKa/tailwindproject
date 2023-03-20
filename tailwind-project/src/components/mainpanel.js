@@ -67,8 +67,4 @@ const MainPanel = () => {
         </div>
     );
     };
-    function klikanim() {
-        document.getElementById("clickanim").translate(100, 100);
-    };
-
 export default MainPanel;

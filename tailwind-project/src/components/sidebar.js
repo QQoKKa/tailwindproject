@@ -16,8 +16,8 @@ const Sidebar = () => {
             </div>
             <p className='text-center'>User1234</p>
             <div className='h-1 bg-infored'></div>
-            <SidebarIcon Icon={<FaPoo size="60"/>} text='główny panel'/>
-            <SidebarIcon Icon={<MdAttachMoney size="60"/>} text='finanse'/>
+           <a> <SidebarIcon Icon={<FaPoo size="60"/>} text='główny panel'/> </a>
+           <a> <SidebarIcon Icon={<MdAttachMoney size="60"/>} text='finanse'/></a>
             <SidebarIcon Icon={<BsFillPeopleFill size="60"/>} text='pracownicy'/>
             <SidebarIcon Icon={<FaTasks size="60"/>} text='zadania'/>
         </div>
