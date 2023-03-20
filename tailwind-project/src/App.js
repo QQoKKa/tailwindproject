@@ -16,7 +16,6 @@ function App() {
         {/* <Route path="/employees" element={<Employees />} />
         <Route path="/tasks" element={<Tasks />} /> */}
       </Routes>
-      <MainPanel />
       </div>
   );
 }

@@ -16,10 +16,10 @@ const Sidebar = () => {
             </div>
             <p className='text-center'>User1234</p>
             <div className='h-1 bg-infored'></div>
-           <a> <SidebarIcon Icon={<FaPoo size="60"/>} text='główny panel'/> </a>
-           <a> <SidebarIcon Icon={<MdAttachMoney size="60"/>} text='finanse'/></a>
-            <SidebarIcon Icon={<BsFillPeopleFill size="60"/>} text='pracownicy'/>
-            <SidebarIcon Icon={<FaTasks size="60"/>} text='zadania'/>
+           <a href='/'> <SidebarIcon Icon={<FaPoo size="50"/>} text='główny panel'/> </a>
+           <a href='/finances'> <SidebarIcon Icon={<MdAttachMoney size="50"/>} text='finanse'/></a>
+           <a> <SidebarIcon Icon={<BsFillPeopleFill size="50"/>} text='pracownicy'/> </a>
+           <a> <SidebarIcon Icon={<FaTasks size="50"/>} text='zadania'/> </a>
         </div>
     );
 };
