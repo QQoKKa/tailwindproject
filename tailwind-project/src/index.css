@@ -14,7 +14,7 @@
   .sidebar-tooltip {
     @apply absolute w-auto p-2 m-2 min-w-max left-44 rounded-md shadow-md
            bg-blue-900 text-infored font-bold
-           transition-all duration-100 scale-0 origin-left;
+           transition-all duration-100 scale-0 origin-left shrink-0 grow-0;
   }
   .mpanel {
     @apply gap-4 w-96;
