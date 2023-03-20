@@ -1,3 +1,6 @@
+import {IoMdCheckmark} from "react-icons/io";
+
+
 const MainPanel = () => {
     const tasks_done = 10;
     const tasks_working = 5;
@@ -14,6 +17,7 @@ const MainPanel = () => {
     function calculateProfitPercent() {
         return (calculateProfit() / last_month) * 100; 
     }
+
     return (
         <div className="bg-gray-100 min-h-screen p-4  
                         flex flex-auto justify-center items-center"> 
@@ -22,7 +26,7 @@ const MainPanel = () => {
                 <div><br></br> ten miesiąc {this_month}zł</div>
                 <div><br></br> poprzedni miesiąc {last_month}zł</div>
                 <div><br></br> Zysk {calculateProfit()}zł</div>
-                    <div className="bg-red-500 w-[200px] h-[200px] flex justify-center items-center place-self-center ml-28 ">
+                    <div className="bg-red-500 w-[200px] h-[200px] flex justify-center items-center place-self-center ml-28  ">
                         <div className="bg-blue-500 w-[150px] h-[150px]
                                           rounded-full flex items-center justify-center
                                         text-white font-bold text-3xl 
@@ -39,10 +43,10 @@ const MainPanel = () => {
       {tasks.map((item) => (
        <p className=" "> <p>{item.name}</p> <p> {item.description}</p>  Deadline: {item.deadline} <p> priority: {item.priority}</p>  </p>
       ))}
-                <button type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-800 focus:ring-4
-                    focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800
-                    place-self-end">
-                    Wykonane
+                <button  class=" text-white bg-green-600 hover:bg-green-700 shadow-lg
+                    font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
+                    place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
+                    <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zakończ
                 </button>
 
                 </div>
@@ -62,6 +66,9 @@ const MainPanel = () => {
             </div>
         </div>
     );
+    };
+    function klikanim() {
+        document.getElementById("clickanim").translate(100, 100);
     };
 
 export default MainPanel;

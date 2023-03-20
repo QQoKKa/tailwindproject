@@ -10,7 +10,8 @@ module.exports = {
       colors: {
         'sidebarblue': '#6E44FF',
         'infored': '#E63946',
-        'underscoregreen': '#00CC66'
+        'underscoregreen': '#00CC66',
+        'btngreen': '#07ba2b'
       },
     },
   },
