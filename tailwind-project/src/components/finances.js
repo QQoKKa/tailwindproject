@@ -1,4 +1,6 @@
 import {BiDollar} from 'react-icons/bi'
+// import { getXataClient } from " ../xata";
+
 const date = new Date();
 const Finances = () => {
 const saldo = 1000;
@@ -29,32 +31,47 @@ let year = date.getFullYear();
                         <div className=" bg-white h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
                             <div className=' border-b-4 border-underscoregreen grid '>
                             <BiDollar className='' size={120} color='green' />
-                            <p className='justify-self-end place-self-end text-5xl font-bold mr-4 mb-2'>{month}:{year}</p>
+                            <p className=' justify-self-end place-self-end text-5xl font-bold mr-4 mb-2'>{month}:{year}</p>
                             </div>
-                            <div className='grid grid-cols-2 grid-rows-2 gap-4'>
-                            <div className=' m-12 border-b-2 border-underscoregreen' >
-                                <p>Prąd: {electricity}zł <button></button></p> 
-                                <p>gaz: {gas}{} <button></button></p>
-                                <p>woda: {water}zł <button></button></p>
-                                <p>ogrzewanie: {heating}zł <button></button></p>
-                                <p>pracownicy: {employees}zł <button></button></p>
+                            <div className=' grid grid-cols-2 grid-rows-2 gap-4'>
+                            <div className=' font-bold m-12 border-b-2 border-underscoregreen' >
+                                <p> <Button >edit</Button> Prąd: {electricity}zł        </p>
+                                <p> <Button >edit</Button> gaz: {gas}{}                 </p>
+                                <p> <Button >edit</Button> woda: {water}zł              </p>
+                                <p> <Button >edit</Button> ogrzewanie: {heating}zł      </p>
+                                <p> <Button >edit</Button> pracownicy: {employees}zł    </p>
                                 <p className='text-end'>Wydatki: {expenses}zł</p>
                             </div>
-                            <div className=' m-12 border-b-2 border-underscoregreen'>Przychody: {income}zł
+                            <div className='grid font-bold m-12 border-b-2 border-underscoregreen'>
                                 <p>Przychód z usług: {income}zł <button></button></p>
+                                <p className='place-self-end'>Przychody: {income}zł</p>
                             </div>
-                            <div className=' m-12 mt-0 mb-24 border-b-2 border-underscoregreen'>Saldo: {saldo}zł
-                                <p>Saldo z poprzedniego miesiąca: {saldo}zł <button></button></p>
+                            <div className=' grid font-bold m-12 mt-0 mb-32 border-b-2 border-underscoregreen'>
+                                <p><Button >edit</Button> Saldo z poprzedniego miesiąca: {saldo}zł </p>
+                                <p className=' place-self-end '> Saldo: {saldo}zł </p>
                                 </div>
-                            <div className=' m-12 mt-0 mb-24 border-b-2 border-underscoregreen'>Zysk: {profit_t_month}zł
+                            <div className=' grid font-bold m-12 mt-0 mb-32 border-b-2 border-underscoregreen'>
                                 <p>Zysk z tego miesiąca: {profit_t_month}zł <button></button></p>
                                 <p>Zysk z tego roku: {profit_t_year}zł <button></button></p>
                                 <p>Zysk z poprzedniego roku: {profit_l_year}zł <button></button></p>
+                                <p className='place-self-end'>Zysk: {profit_t_month}zł</p>
                                 </div>
                             </div>
                         </div>           
         </div>
     );
 };
+const Button = ({ onClick, children }) => {
+    return (
+      <button className='"inline-block rounded bg-sidebarblue px-3 pt-1 pb-1 text-xs font-medium uppercase leading-normal
+                        text-white shadow-[0_4px_9px_-4px_#3b71ca] 
+                          transition duration-150 ease-in-out hover:bg-sidebarbluehover hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                          focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
+                          active:bg-blue-200 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]' 
+                          type="button" onClick={onClick}>
+        {children}
+      </button>
+    );
+  };
 
 export default Finances

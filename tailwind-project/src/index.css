@@ -22,4 +22,7 @@
   .gridpanel {
     @apply bg-white shadow-lg rounded-lg p-4;
   }
+  .financebutton {
+    
+  }
 }

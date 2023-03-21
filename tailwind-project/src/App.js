@@ -7,7 +7,6 @@ import Tasks from './components/tasks';
 import { Routes, Route } from 'react-router-dom';
 
 
-
 function App() {
   return (
     <div className="flex">

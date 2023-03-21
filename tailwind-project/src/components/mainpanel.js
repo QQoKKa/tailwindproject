@@ -1,5 +1,12 @@
 import {IoMdCheckmark} from "react-icons/io";
+// Generated with CLI
+// import { getXataClient } from "../xata";
 
+//  const xata = getXataClient();
+
+// const records = await xata.db.employees.getAll();
+
+// console.log(records);
 
 const MainPanel = () => {
     const tasks_done = 10;
