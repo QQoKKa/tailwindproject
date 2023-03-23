@@ -1,7 +1,0 @@
-{
-  "databaseURL": "https://QQoKKa-s-workspace-58db26.eu-west-1.xata.sh/db/workpanel",
-  "codegen": {
-    "output": "src/xata.js",
-    "moduleType": "esm"
-  }
-}

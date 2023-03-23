@@ -2,8 +2,30 @@ import {BsFillPeopleFill} from 'react-icons/bs';
 import {MdAttachMoney} from 'react-icons/md';
 import {FaPoo, FaTasks} from 'react-icons/fa';
 import {RxFace}    from 'react-icons/rx';
+import { useEffect, useState } from 'react';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
+
 
 const Sidebar = () => {
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        async function getDocsFromCollection() {
+          const docRef = collection(db, "emp");
+          const docSnap = await getDocs(docRef);
+          const data = [];
+          docSnap.forEach((doc) => {
+            data.push(doc.data());
+          });
+          setUserData(data);
+        }
+    
+        getDocsFromCollection().catch((error) => {
+          // Handle any errors that occur
+          console.error(error);
+        });
+      }, []);
+
     return (
         <div className="fixed top-0 left-0 h-screen w-44
                         flex flex-col
@@ -14,7 +36,7 @@ const Sidebar = () => {
                             bg-blue-900 text-infored'>
                 <RxFace size="60" className="text-center"/>
             </div>
-            <p className='text-center'>User1234</p>
+            {userData && <p className='text-center'>{userData[0].name + " " +userData[0].surname}</p>}
             <div className='h-1 bg-infored'></div>
            <a href='/'> <SidebarIcon Icon={<FaPoo size="50"/>} text='główny panel'/> </a>
            <a href='/finances'> <SidebarIcon Icon={<MdAttachMoney size="50"/>} text='finanse'/></a>

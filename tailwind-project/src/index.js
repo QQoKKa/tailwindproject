@@ -4,6 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from './firebase';
+
+// async function getDocsFromCollection() {
+//   const docRef = collection(db, "emp");
+//   const docSnap = await getDocs(docRef);
+//   docSnap.forEach((doc) => {
+//     const data = doc.data();
+//     console.log(data);
+//   });
+// }
+//getDocsFromCollection();
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

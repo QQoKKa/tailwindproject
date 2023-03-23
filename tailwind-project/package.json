@@ -11,6 +11,8 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@xata.io/client": "^0.23.3",
+    "firebase": "^9.18.0",
+    "firebase-admin": "^11.5.0",
     "jquerry": "^0.0.1-security",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",

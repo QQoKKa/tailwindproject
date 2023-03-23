@@ -1,4 +1,6 @@
 import {MdTaskAlt} from 'react-icons/md';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
+
 const Tasks = () => {
     return (       
         <div className="bg-gray-100 min-h-screen p-4  

@@ -1,20 +1,42 @@
 import {IoMdCheckmark} from "react-icons/io";
-// Generated with CLI
-// import { getXataClient } from "../xata";
+import { useEffect, useState } from "react";
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
 
-//  const xata = getXataClient();
-
-// const records = await xata.db.employees.getAll();
-
-// console.log(records);
 
 const MainPanel = () => {
-    const tasks_done = 10;
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        async function getDocsFromCollection() {
+          const docRef = collection(db, "emp");
+          const docSnap = await getDocs(docRef);
+          const data = [];
+          docSnap.forEach((doc) => {
+            data.push(doc.data());
+          });
+          setUserData(data);
+        }
+    
+        getDocsFromCollection().catch((error) => {
+          // Handle any errors that occur
+          console.error(error);
+        });
+      }, []);
+
+      const best_employee = userData ? userData.reduce((acc, cur) => {
+        if (cur.tasks_done > acc.tasks_done) {
+          return cur;
+        } else {
+          return acc;
+        }
+      }, userData[0]) : null;
+
+    
+    const tasks_done = userData && userData[0] ? userData[0].tasks_done : 0;
     const tasks_working = 5;
-    const salary = 3520;
+    const salary = userData && userData[0] ? userData[0].salary : 0;
     let last_month = 1000;
     let this_month = 3000;
-    const best_employee = "Jan Kowalski";
     const best_employee_salary = 3000;
     const best_employee_tasks = 10;
     const tasks = [ {id: 1, name: "Zadanie 1", description: "Opis zadania 1", status: "working", employee: "Jan Kowalski", deadline: "2021-10-10", priority: "high"} ];
@@ -42,9 +64,15 @@ const MainPanel = () => {
                 </div>
                 <div className="gridpanel"> Najlepszy pracownik 
                 <br></br>
-                Imię i nazwisko: {best_employee} <br></br>
-                Pensja: {best_employee_salary}zł <br></br>
-                Zadania wykonane: {best_employee_tasks}
+                {best_employee? (
+                    <>
+                <p>Imię i nazwisko: {best_employee.name+" "+best_employee.surname} <br></br></p>
+                <p>Pensja: {best_employee.salary}zł<br></br></p>
+                <p>Zadania wykonane: {best_employee.tasks_done}</p>
+                </>
+                ): (
+                    <p>Nie ma najlepszych pracowników</p>
+                )}
                 </div>
                 <div className="gridpanel flex flex-col"> Aktualne zadanie dla ciebie <br></br>
       {tasks.map((item) => (
@@ -62,7 +90,7 @@ const MainPanel = () => {
                     <div className="text-center">Wykonane zadania
                         <p>{tasks_done}</p>
                     </div>
-                    <div className="text-center">Trwające zadania
+                    <div className="text-center">Trwające zadania w firmie
                         <p>{tasks_working}</p>
                     </div>
                     <div className="text-center">aktualna wypłata

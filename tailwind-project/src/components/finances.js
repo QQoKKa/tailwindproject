@@ -1,5 +1,5 @@
 import {BiDollar} from 'react-icons/bi'
-// import { getXataClient } from " ../xata";
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
 
 const date = new Date();
 const Finances = () => {
@@ -22,6 +22,7 @@ let year = date.getFullYear();
             case i: 
                 month = monthtable[i];
                 break;
+            default:
         }
     }
 
@@ -46,11 +47,11 @@ let year = date.getFullYear();
                                 <p>Przychód z usług: {income}zł <button></button></p>
                                 <p className='place-self-end'>Przychody: {income}zł</p>
                             </div>
-                            <div className=' grid font-bold m-12 mt-0 mb-32 border-b-2 border-underscoregreen'>
+                            <div className=' grid font-bold m-12 mt-[-55px] mb-40 border-b-2 border-underscoregreen'>
                                 <p><Button >edit</Button> Saldo z poprzedniego miesiąca: {saldo}zł </p>
                                 <p className=' place-self-end '> Saldo: {saldo}zł </p>
                                 </div>
-                            <div className=' grid font-bold m-12 mt-0 mb-32 border-b-2 border-underscoregreen'>
+                            <div className=' grid font-bold m-12 mt-[-55px] mb-40 border-b-2 border-underscoregreen'>
                                 <p>Zysk z tego miesiąca: {profit_t_month}zł <button></button></p>
                                 <p>Zysk z tego roku: {profit_t_year}zł <button></button></p>
                                 <p>Zysk z poprzedniego roku: {profit_l_year}zł <button></button></p>
@@ -63,7 +64,7 @@ let year = date.getFullYear();
 };
 const Button = ({ onClick, children }) => {
     return (
-      <button className='"inline-block rounded bg-sidebarblue px-3 pt-1 pb-1 text-xs font-medium uppercase leading-normal
+      <button className='" mb-1 inline-block rounded bg-sidebarblue px-3 pt-1 pb-1 text-xs font-medium uppercase leading-normal
                         text-white shadow-[0_4px_9px_-4px_#3b71ca] 
                           transition duration-150 ease-in-out hover:bg-sidebarbluehover hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                           focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
