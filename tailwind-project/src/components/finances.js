@@ -37,12 +37,15 @@ let year = date.getFullYear();
                             </div>
                             <div className=' grid grid-cols-2 grid-rows-2 gap-4'>
                             <div className=' font-bold m-12 border-b-2 border-underscoregreen' >
-                                <p> <Button >edit</Button> Prąd: {electricity}zł        </p>
-                                <p> <Button >edit</Button> gaz: {gas}{}                 </p>
-                                <p> <Button >edit</Button> woda: {water}zł              </p>
-                                <p> <Button >edit</Button> ogrzewanie: {heating}zł      </p>
-                                <p> <Button >edit</Button> pracownicy: {employees}zł    </p>
+                                <p>  Prąd: {electricity}zł        </p>
+                                <p>  gaz: {gas}{}                 </p>
+                                <p>  woda: {water}zł              </p>
+                                <p>  ogrzewanie: {heating}zł      </p>
+                                <p>  pracownicy: {employees}zł    </p>
+                                <div className='grid'>
+                                    <Button> edytuj</Button>
                                 <p className='text-end'>Wydatki: {expenses}zł</p>
+                                </div>
                             </div>
                             <div className='grid font-bold m-12 border-b-2 border-underscoregreen'>
                                 <p>Przychód z usług: {income}zł <button></button></p>
@@ -65,7 +68,7 @@ let year = date.getFullYear();
 };
 const Button = ({ onClick, children }) => {
     return (
-      <button className='" mb-1 inline-block rounded bg-sidebarblue px-3 pt-1 pb-1 text-xs font-medium uppercase leading-normal
+      <button className=' self-end justify-self-start mb-1 inline-block rounded bg-sidebarblue px-3 pt-1 pb-1 text-xs font-medium uppercase leading-normal
                         text-white shadow-[0_4px_9px_-4px_#3b71ca] 
                           transition duration-150 ease-in-out hover:bg-sidebarbluehover hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                           focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 

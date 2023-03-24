@@ -112,22 +112,22 @@ const renderPriority = (priority) => {
                 <div className="gridpanel flex flex-col"> Aktualne zadanie dla ciebie <br></br>
                 {tasksData && tasksData.length > 0 && (
                   <div className="flex flex-row justify-center space-x-5 ">
-                    <div className="text-center">Nazwa zadania:
+                    <div className="text-center mb-2">Nazwa zadania:
                       <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).name}</p>
                     </div>
-                    <div className="text-center">Opis zadania:
+                    <div className="text-center mb-2" >Opis zadania:
                       <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).description}</p>
                     </div>
-                    <div className="text-center">Termin wykonania:
+                    <div className="text-center mb-2">Termin wykonania:
                       <p>{new Date(tasksData.reduce((maxPriorityTask, currentTask) => {
                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).deadline * 1000).toLocaleString()}</p>
                     </div>
-                    <div className="text-center">Priorytet:
+                    <div className="text-center mb-2">Priorytet:
                     <p>{renderPriority(tasksData.reduce((maxPriorityTask, currentTask) => {
                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).priority)}</p>
@@ -135,10 +135,11 @@ const renderPriority = (priority) => {
                   </div>
               )}
                 
-                <button  class=" mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
+                <button  class=" group relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
                     place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
                     <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zakończ
+                    <span className='tooltip-btn group-hover:scale-100'>Zakończ zadanie</span>
                 </button>
 
                 </div>
