@@ -12,7 +12,10 @@ module.exports = {
         'sidebarbluehover': '#7F5CFF',
         'infored': '#E63946',
         'underscoregreen': '#00CC66',
-        'btngreen': '#07ba2b'
+        'btngreen': '#07ba2b',
+        'btnpurple': '#E2A0FF',
+        'btnpurplehover': '#A970C2',
+        'btnpurpleclick': '#ECC1FF'
       },
     },
   },

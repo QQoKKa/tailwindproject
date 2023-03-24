@@ -1,6 +1,6 @@
 import {MdTaskAlt} from 'react-icons/md';
 import {useEffect, useState } from 'react';
-import {ImCross} from 'react-icons/im';
+import {TbTextPlus} from 'react-icons/tb';
 import {SlNote} from 'react-icons/sl';
 import {IoIosCheckmarkCircle} from 'react-icons/io';
 import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
@@ -29,7 +29,7 @@ useEffect(() => {
 
     const tasksData = [];
     tasksSnap.forEach((doc) => {
-      tasksData.push(doc.data());
+      tasksData.push({id: doc.id, ...doc.data()});
     });
     setTasksData(tasksData);
   }
@@ -40,20 +40,21 @@ useEffect(() => {
   });
 }, []);
 
-const deadlineDate = tasksData && tasksData.deadline ? new Date(tasksData.deadline) : null;
-const deadlineDateFormatted = deadlineDate ? deadlineDate.toLocaleDateString() : "brak daty";
+const timestamp = 1618675200; // Unix timestamp in seconds
+const date = new Date(timestamp * 1000); // Convert to milliseconds and create Date object
+const formattedDate = date.toLocaleString(); // Convert to local time and format as string
 
 
 const getTaskWorker = (task) => {
   const assignedEmp = empData.find((emp) => emp.login === task.emp_id);
-  if (assignedEmp) {
-    return assignedEmp.name + " " + assignedEmp.surname;
-  } else {
-    return "Nie przypisano pracownika";
-  }
+  return assignedEmp ? assignedEmp.name + " " + assignedEmp.surname : "Nie przypisano pracownika";
 };
 
 
+let totaltasks =  0;
+if(empData){
+  totaltasks = empData.length;
+}
 
 const renderStatus = (status) => {
   if (status === 0) {
@@ -63,44 +64,43 @@ const renderStatus = (status) => {
   }
 };
 
+const renderPriority = (priority) => {
+  switch (priority) {
+  case 0:
+    return "low";
+  case 1:
+    return "medium";
+  case 2:
+    return "high";
+  default:
+    return "low";
+  }
+};
 
-let priorityValue = tasksData && tasksData.priority !== undefined ? tasksData.priority : null;
-let priority = "";
-
-switch (priorityValue) {
-    case 0:
-        priority = "low";
-        break;
-    case 1:
-        priority = "medium";
-        break;
-    case 2:
-        priority = "high";
-        break;
-    default:
-        priority = "low";
-        break;
-}
-    
     return (       
         <div className="bg-gray-100 min-h-screen p-4  
         flex flex-auto justify-center items-center"> 
         <div className=" bg-white h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
-        <div className='border-b-4 border-blue-500 grid'>
-        <MdTaskAlt className='' size={100} color='#3B82F6' />
-        <p className='justify-self-end place-self-end text-5xl font-bold mr-4 mb-2'>Zadania</p>
+        <div className='border-b-4 border-btnpurple grid'>
+        <MdTaskAlt className='' size={100} color='#ECC1FF' />
+        <div className='grid grid-flow-col'>
+        <button className=' ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                                   focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
+                                   active:bg-btnpurpleclick active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><TbTextPlus size={"32px"} color='white'></TbTextPlus></button>
+        <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Zadania: {totaltasks}</p>
+        </div>
         </div>
         <div>
             {/* create table */}
         <table className='table-auto mx-auto'>
             <thead>
                 <tr>
-                    <th className='border-2'>Nazwa</th>
-                    <th className='border-2'>Opis</th>
-                    <th className='border-2'>Pracownik</th>
-                    <th className='border-2'>Priority</th>
-                    <th className='border-2'>Dead-line</th>
-                    <th className='border-2'>Status</th>
+                    <th className=''>Nazwa</th>
+                    <th className=''>Opis</th>
+                    <th className=''>Team</th>
+                    <th className=''>Priority</th>
+                    <th className=''>Dead-line</th>
+                    <th className=''>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,8 +109,8 @@ switch (priorityValue) {
                         <td className='border-2 px-4 py-2'>{task.name}</td>
                         <td className='border-2 px-4 py-2'>{task.description}</td>
                         <td className='border-2 px-4 py-2'>{getTaskWorker(task)}</td>
-                        <td className='border-2 px-4 py-2'>{priority}</td>
-                        <td className='border-2 px-4 py-2'>{deadlineDateFormatted}</td>
+                        <td className='border-2 px-4 py-2'>{renderPriority(task.priority)}</td>
+                        <td className='border-2 px-4 py-2'>{new Date(task.deadline * 1000).toLocaleString()}</td>
                         <td className='border-2 px-4 py-2'>{renderStatus(task.status)}</td>
                         <td className=' m-2'>
                         <button className='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
