@@ -84,9 +84,11 @@ const renderPriority = (priority) => {
         <div className='border-b-4 border-btnpurple grid'>
         <MdTaskAlt className='' size={100} color='#ECC1FF' />
         <div className='grid grid-flow-col'>
-        <button className=' ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+        <button className='relative group ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
-                                   active:bg-btnpurpleclick active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><TbTextPlus size={"32px"} color='white'></TbTextPlus></button>
+                                   active:bg-btnpurpleclick active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><TbTextPlus size={"32px"} color='white'></TbTextPlus>
+                                    <span className='tooltip-btn group-hover:scale-100'>Dodaj zadanie</span>
+                                   </button>
         <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Zadania: {totaltasks}</p>
         </div>
         </div>
@@ -97,7 +99,7 @@ const renderPriority = (priority) => {
                 <tr>
                     <th className=''>Nazwa</th>
                     <th className=''>Opis</th>
-                    <th className=''>Team</th>
+                    <th className=''>Pracownik</th>
                     <th className=''>Priority</th>
                     <th className=''>Dead-line</th>
                     <th className=''>Status</th>
@@ -113,18 +115,20 @@ const renderPriority = (priority) => {
                         <td className='border-2 px-4 py-2'>{new Date(task.deadline * 1000).toLocaleString()}</td>
                         <td className='border-2 px-4 py-2'>{renderStatus(task.status)}</td>
                         <td className=' m-2'>
-                        <button className='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button className=' group bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-yellow-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <SlNote size={20}></SlNote>
+                        <span className='tooltip-btn group-hover:scale-100'>Edytuj</span>
                         </button>
                         </td>
                     <td className=' m-2'>
                         {task.status === 0 ? (
-                        <button className=' bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button className='group bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <IoIosCheckmarkCircle size={20}></IoIosCheckmarkCircle>
+                        <span className='tooltip-btn group-hover:scale-100'>Zakończ</span>
                         </button>
                  ) : (
                   //button gone

@@ -38,6 +38,11 @@ useEffect(() => {
   });
 }, []);
 
+const timestamp = 1618675200; // Unix timestamp in seconds
+const date = new Date(timestamp * 1000); // Convert to milliseconds and create Date object
+const formattedDate = date.toLocaleString(); // Convert to local time and format as string
+
+
 //create table task that gets taskData where tasksData.emp_id = empData.login = worker1
 
       const best_employee = empData ? empData.reduce((acc, cur) => {
@@ -61,6 +66,21 @@ useEffect(() => {
     function calculateProfitPercent() {
         return (calculateProfit() / last_month) * 100; 
     }
+
+    
+const renderPriority = (priority) => {
+  switch (priority) {
+  case 0:
+    return "low";
+  case 1:
+    return "medium";
+  case 2:
+    return "high";
+  default:
+    return "low";
+  }
+};
+
 
     return (
         <div className="bg-gray-100 min-h-screen p-4  
@@ -90,18 +110,32 @@ useEffect(() => {
                 )}
                 </div>
                 <div className="gridpanel flex flex-col"> Aktualne zadanie dla ciebie <br></br>
-                {/* {tasks && tasks[0] ? (
-                    <>
-                    <p>Nazwa zadania: {tasks[0].name}</p>
-                    <p>Opis zadania: {tasks[0].description}</p>
-                    <p>Deadline: {tasks[0].deadline}</p>
-                    <p>Priorytet: {tasks[0].priority}</p>
-                    </>
-                ) : (
-                    <p>Nie masz aktualnie żadnych zadań</p>
-                )} */}
+                {tasksData && tasksData.length > 0 && (
+                  <div className="flex flex-row justify-center space-x-5 ">
+                    <div className="text-center">Nazwa zadania:
+                      <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
+                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                      }).name}</p>
+                    </div>
+                    <div className="text-center">Opis zadania:
+                      <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
+                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                      }).description}</p>
+                    </div>
+                    <div className="text-center">Termin wykonania:
+                      <p>{new Date(tasksData.reduce((maxPriorityTask, currentTask) => {
+                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                      }).deadline * 1000).toLocaleString()}</p>
+                    </div>
+                    <div className="text-center">Priorytet:
+                    <p>{renderPriority(tasksData.reduce((maxPriorityTask, currentTask) => {
+                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                      }).priority)}</p>
+                    </div>
+                  </div>
+              )}
                 
-                <button  class=" text-white bg-green-600 hover:bg-green-700 shadow-lg
+                <button  class=" mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
                     place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
                     <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zakończ

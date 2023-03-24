@@ -51,9 +51,11 @@ useEffect(() => {
         <div className=' border-b-4 border-blue-500 grid'>
         <BsFillPersonFill className=' self-end' size={120} color='#3B82F6' />
         <div className='grid grid-flow-col'>
-        <button className=' ml-8 justify-self-start place-self-start bg-blue-500 hover:bg-blue-600 py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+        <button className='group ml-8 justify-self-start place-self-start bg-blue-500 hover:bg-blue-600 py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
-                                   active:bg-blue-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><BsPersonPlusFill size={"32px"} color='white'></BsPersonPlusFill></button>
+                                   active:bg-blue-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><BsPersonPlusFill size={"32px"} color='white'></BsPersonPlusFill>
+                                   <span className='tooltip-btn group-hover:scale-100'>Dodaj pracownika</span>
+                                   </button>
         <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Pracownicy: {totalWorkers}</p>
         </div>
         </div>
@@ -99,17 +101,19 @@ useEffect(() => {
                     <td className='border px-4 py-2'>{user.salary}zł</td>
                     <td className='border px-4 py-2'>{user.tasks_done}</td>
                     <td className=' m-2'>
-                        <button className='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button className='group bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-yellow-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <SlNote className=''></SlNote>
+                        <span className='tooltip-btn group-hover:scale-100'>Edytuj</span>
                         </button>
                     </td>
                     <td className=' m-2'>
-                        <button className=' bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button className='group bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <ImCross></ImCross>
+                        <span className='tooltip-btn group-hover:scale-100'>usuń</span>
                         </button>
                     </td>
                 </tr>

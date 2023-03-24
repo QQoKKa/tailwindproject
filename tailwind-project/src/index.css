@@ -22,7 +22,9 @@
   .gridpanel {
     @apply bg-white shadow-lg rounded-lg p-4;
   }
-  .financebutton {
-    
+  .tooltip-btn {
+    @apply absolute w-auto p-2 m-2 min-w-max rounded-md shadow-md
+    bg-white text-black font-bold
+    transition-all duration-100 scale-0 origin-left shrink-0 grow-0
   }
 }
