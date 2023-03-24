@@ -3,7 +3,7 @@ import {MdAttachMoney} from 'react-icons/md';
 import {FaPoo, FaTasks} from 'react-icons/fa';
 import {RxFace}    from 'react-icons/rx';
 import { useEffect, useState } from 'react';
-import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
 
 
 const Sidebar = () => {

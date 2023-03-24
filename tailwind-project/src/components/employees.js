@@ -1,31 +1,47 @@
-import {BsFillPersonFill} from 'react-icons/bs';
+import {BsFillPersonFill, BsPersonPlusFill} from 'react-icons/bs';
 import { useEffect, useState } from 'react';
-import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
+import {ImCross} from 'react-icons/im';
+import {SlNote} from 'react-icons/sl';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
 
 const Employees = () => {
-    const [userData, setUserData] = useState(null);
+    const [empData, setEmpData] = useState(null);
+    const [tasksData, setTasksData] = useState(null);
 
-    useEffect(() => {
-        async function getDocsFromCollection() {
-          const docRef = collection(db, "emp");
-          const docSnap = await getDocs(docRef);
-          const data = [];
-          docSnap.forEach((doc) => {
-            data.push(doc.data());
-          });
-          setUserData(data);
-        }
-    
-        getDocsFromCollection().catch((error) => {
-          // Handle any errors that occur
-          console.error(error);
-        });
-      }, []);
+useEffect(() => {
+  async function getDataFromCollections() {
+    const empRef = collection(db, "emp");
+    const tasksRef = collection(db, "tasks");
 
+
+    const [empSnap, tasksSnap] = await Promise.all([
+      getDocs(empRef),
+      getDocs(tasksRef),
+    ]);
+
+    const empData = [];
+    empSnap.forEach((doc) => {
+      empData.push(doc.data());
+      console.log();
+    });
+    setEmpData(empData);
+
+    const tasksData = [];
+    tasksSnap.forEach((doc) => {
+      tasksData.push(doc.data());
+    });
+    setTasksData(tasksData);
+  }
+
+  getDataFromCollections().catch((error) => {
+    // Handle any errors that occur
+    console.error(error);
+  });
+}, []);
       //calculate total workers
         let totalWorkers = 0;
-        if(userData){
-            totalWorkers = userData.length;
+        if(empData){
+            totalWorkers = empData.length;
         }
 
     return (       
@@ -34,10 +50,15 @@ const Employees = () => {
         <div className=" bg-white h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
         <div className=' border-b-4 border-blue-500 grid'>
         <BsFillPersonFill className=' self-end' size={120} color='#3B82F6' />
-        <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'>Pracownicy: {totalWorkers}</p>
+        <div className='grid grid-flow-col'>
+        <button className=' ml-8 justify-self-start place-self-start bg-blue-500 hover:bg-blue-600 py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                                   focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
+                                   active:bg-blue-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><BsPersonPlusFill size={"32px"} color='white'></BsPersonPlusFill></button>
+        <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Pracownicy: {totalWorkers}</p>
+        </div>
         </div>
         <div>
-            {/* create list of workers using userdata */}
+            {/* create list of workers using empData */}
         <table className='table-auto mx-auto'>
             <thead>
                 <tr>
@@ -50,7 +71,7 @@ const Employees = () => {
                     <th className='px-4 py-2'>Delete</th> */}
                 </tr>
             </thead>
-            {userData && userData.map((user) => (
+            {empData && empData.map((user) => (
                 // <div className='flex flex-row justify-between border-b-'>
                 //     <div className='flex flex-row bg-gray-300 w-full border-b-2 border-blue-400 space-x-3 '>
                 //         <p className='text-2xl m-2'>{user.name}</p>
@@ -79,14 +100,14 @@ const Employees = () => {
                         <button className='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-yellow-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
-                        Edit
+                        <SlNote className=''></SlNote>
                         </button>
                     </td>
                     <td className=' m-2'>
-                        <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button className=' bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
-                        Delete
+                        <ImCross></ImCross>
                         </button>
                     </td>
                 </tr>

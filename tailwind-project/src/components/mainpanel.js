@@ -1,45 +1,60 @@
 import {IoMdCheckmark} from "react-icons/io";
 import { useEffect, useState } from "react";
-import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
 
 
 const MainPanel = () => {
-    const [userData, setUserData] = useState(null);
+    const [empData, setEmpData] = useState(null);
+    const [tasksData, setTasksData] = useState(null);
 
-    useEffect(() => {
-        async function getDocsFromCollection() {
-          const docRef = collection(db, "emp");
-          const docSnap = await getDocs(docRef);
-          const data = [];
-          docSnap.forEach((doc) => {
-            data.push(doc.data());
-          });
-          setUserData(data);
-        }
-    
-        getDocsFromCollection().catch((error) => {
-          // Handle any errors that occur
-          console.error(error);
-        });
-      }, []);
+useEffect(() => {
+  async function getDataFromCollections() {
+    const empRef = collection(db, "emp");
+    const tasksRef = collection(db, "tasks");
 
-      const best_employee = userData ? userData.reduce((acc, cur) => {
+
+    const [empSnap, tasksSnap] = await Promise.all([
+      getDocs(empRef),
+      getDocs(tasksRef),
+    ]);
+
+    const empData = [];
+    empSnap.forEach((doc) => {
+      empData.push(doc.data());
+      console.log();
+    });
+    setEmpData(empData);
+
+    const tasksData = [];
+    tasksSnap.forEach((doc) => {
+      tasksData.push(doc.data());
+    });
+    setTasksData(tasksData);
+  }
+
+  getDataFromCollections().catch((error) => {
+    // Handle any errors that occur
+    console.error(error);
+  });
+}, []);
+
+//create table task that gets taskData where tasksData.emp_id = empData.login = worker1
+
+      const best_employee = empData ? empData.reduce((acc, cur) => {
         if (cur.tasks_done > acc.tasks_done) {
           return cur;
         } else {
           return acc;
         }
-      }, userData[0]) : null;
+      }, empData[0]) : null;
 
     
-    const tasks_done = userData && userData[0] ? userData[0].tasks_done : 0;
+    const tasks_done = empData && empData[0] ? empData[0].tasks_done : 0;
     const tasks_working = 5;
-    const salary = userData && userData[0] ? userData[0].salary : 0;
+    const salary = empData && empData[0] ? empData[0].salary : 0;
     let last_month = 1000;
     let this_month = 3000;
-    const best_employee_salary = 3000;
-    const best_employee_tasks = 10;
-    const tasks = [ {id: 1, name: "Zadanie 1", description: "Opis zadania 1", status: "working", employee: "Jan Kowalski", deadline: "2021-10-10", priority: "high"} ];
+    // const tasks = [ {id: 1, name: "Zadanie 1", description: "Opis zadania 1", status: "working", employee: "Jan Kowalski", deadline: "2021-10-10", priority: "high"} ];
     function calculateProfit() {
         return this_month - last_month;
     }
@@ -75,9 +90,17 @@ const MainPanel = () => {
                 )}
                 </div>
                 <div className="gridpanel flex flex-col"> Aktualne zadanie dla ciebie <br></br>
-      {tasks.map((item) => (
-       <p className=" "> <p>{item.name}</p> <p> {item.description}</p>  Deadline: {item.deadline} <p> priority: {item.priority}</p>  </p>
-      ))}
+                {/* {tasks && tasks[0] ? (
+                    <>
+                    <p>Nazwa zadania: {tasks[0].name}</p>
+                    <p>Opis zadania: {tasks[0].description}</p>
+                    <p>Deadline: {tasks[0].deadline}</p>
+                    <p>Priorytet: {tasks[0].priority}</p>
+                    </>
+                ) : (
+                    <p>Nie masz aktualnie żadnych zadań</p>
+                )} */}
+                
                 <button  class=" text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
                     place-self-end transition duration-150 active:bg-green-200 hover:scale-105">

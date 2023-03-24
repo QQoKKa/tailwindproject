@@ -1,5 +1,6 @@
 import {BiDollar} from 'react-icons/bi'
-import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../firebase';
+
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
 
 const date = new Date();
 const Finances = () => {
