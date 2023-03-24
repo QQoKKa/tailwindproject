@@ -143,6 +143,6 @@ const renderPriority = (priority) => {
         </div>           
 
 </div> );
-};
 
+};
 export default Tasks;

@@ -1,11 +1,12 @@
 import {IoMdCheckmark} from "react-icons/io";
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
 
 
 const MainPanel = () => {
     const [empData, setEmpData] = useState(null);
     const [tasksData, setTasksData] = useState(null);
+
 
 useEffect(() => {
   async function getDataFromCollections() {
@@ -21,7 +22,6 @@ useEffect(() => {
     const empData = [];
     empSnap.forEach((doc) => {
       empData.push(doc.data());
-      console.log();
     });
     setEmpData(empData);
 
@@ -37,6 +37,14 @@ useEffect(() => {
     console.error(error);
   });
 }, []);
+
+
+let totaltasks =  0;
+if(empData){
+  totaltasks = empData.length;
+}
+
+// sets date
 
 const timestamp = 1618675200; // Unix timestamp in seconds
 const date = new Date(timestamp * 1000); // Convert to milliseconds and create Date object
@@ -149,7 +157,7 @@ const renderPriority = (priority) => {
                         <p>{tasks_done}</p>
                     </div>
                     <div className="text-center">Trwające zadania w firmie
-                        <p>{tasks_working}</p>
+                        <p>{totaltasks}</p>
                     </div>
                     <div className="text-center">aktualna wypłata
                         <p>{salary}zł</p>
