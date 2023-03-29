@@ -1,13 +1,17 @@
 import {BsFillPersonFill, BsPersonPlusFill} from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 import {ImCross} from 'react-icons/im';
+import {IoMdCheckmark} from 'react-icons/io';
 import {SlNote} from 'react-icons/sl';
 import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
 
 const Employees = () => {
+    const [empID, setEmpID] = useState([]);
     const [empData, setEmpData] = useState(null);
     const [tasksData, setTasksData] = useState(null);
-
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const [panelHidden, setPanelHidden] = useState(true);
+    const [editpanelHidden, seteditPanelHidden] = useState(true);
 useEffect(() => {
   async function getDataFromCollections() {
     const empRef = collection(db, "emp");
@@ -19,13 +23,18 @@ useEffect(() => {
       getDocs(tasksRef),
     ]);
 
+    const empID = [];
+    empSnap.forEach((doc) => {
+      empID.push(doc.id);
+    });
+    setEmpID(empID);
+
     const empData = [];
     empSnap.forEach((doc) => {
       empData.push(doc.data());
-      console.log();
     });
     setEmpData(empData);
-
+    
     const tasksData = [];
     tasksSnap.forEach((doc) => {
       tasksData.push(doc.data());
@@ -33,28 +42,97 @@ useEffect(() => {
     setTasksData(tasksData);
   }
 
+
   getDataFromCollections().catch((error) => {
     // Handle any errors that occur
     console.error(error);
   });
 }, []);
-      //calculate total workers
-        let totalWorkers = 0;
-        if(empData){
-            totalWorkers = empData.length;
-        }
+    //calculate total workers
+      let totalWorkers = 0;
+      if(empData){
+          totalWorkers = empData.length;
+      }
+
+      // async function deleteEmp(empIdToDelete) {
+      //   try {
+      //     await deleteDoc(doc(db, "emp", empIdToDelete));
+      //     const updatedEmpData = empData.filter((emp) => emp.id !== empIdToDelete);
+      //     setEmpData(updatedEmpData);
+
+      //     const updatedEmpIds = empID.filter((id) => id !== empIdToDelete);
+      //     setEmpID(updatedEmpIds);
+
+      //     console.log(`Worker with ID ${empIdToDelete} deleted successfully`);
+      //   }  catch (error) {
+      //   console.error(`Error deleting worker with ID ${empIdToDelete}: ${error}`);
+      // }
+      // }
+
+      function movepanel() {
+        const panel = document.querySelector(".navbar");
+        panel.classList.toggle("hidden");
+        setPanelHidden(!panelHidden);
+      }
+
+      const handleEditClick = (user) => {
+        const editpanel = document.querySelector(".navbaredit");
+        editpanel.classList.toggle("hidden");
+        setSelectedEmployee(user);
+        seteditPanelHidden(!editpanelHidden);
+      }
+      //add
+      window.onload = function() {
+      const addempForm = document.querySelector(".addemp-form");
+      addempForm.addEventListener("submit", (e) => {
+        console.log("start");
+        e.preventDefault();
+        
+        const empRef = collection(db, "emp");
+
+          addDoc (empRef, {
+          // name:  addempForm.name.value,
+          // surname:  addempForm.surname.value,
+          // position:  addempForm.position.value,
+          // team:  addempForm.team.value,
+          // salary:  addempForm.salary.value,
+          // login: "worker3",
+          // password:  addempForm.password.value,
+          // tasks_done: 0,
+          name:  "jan",
+          // surname:  "Kowalski",
+          // position:  "programista",
+          // team:  "IT",
+          // salary:  3500,
+          // login: "worker3",
+          // password:  "1234",
+          // tasks_done: 0,
+          })
+          .then(() => {
+            console.log("Document successfully written!");
+            addempForm.reset();
+          })
+        console.log("end");
+        })
+      } 
+      //delete
+      const deleteempForm = document.querySelector(".del-form");
+
+      //edit
+      const editempForm = document.querySelector(".editemp-form");
 
     return (       
+      <>
         <div className="bg-gray-100 min-h-screen p-4  
         flex flex-auto justify-center items-center"> 
         <div className=" bg-white h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
         <div className=' border-b-4 border-blue-500 grid'>
         <BsFillPersonFill className=' self-end' size={120} color='#3B82F6' />
         <div className='grid grid-flow-col'>
-        <button className='group ml-8 justify-self-start place-self-start bg-blue-500 hover:bg-blue-600 py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+        <button onClick={movepanel} className='group ml-8 justify-self-start place-self-start bg-blue-500 hover:bg-blue-600 py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-blue-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><BsPersonPlusFill size={"32px"} color='white'></BsPersonPlusFill>
-                                   <span className='tooltip-btn group-hover:scale-100'>Dodaj pracownika</span>
+                                   <span className='tooltip-btn group-hover:scale-100'>Dodaj pracownika</span> 
                                    </button>
         <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Pracownicy: {totalWorkers}</p>
         </div>
@@ -74,24 +152,7 @@ useEffect(() => {
                     <th className='px-4 py-2'>Delete</th> */}
                 </tr>
             </thead>
-            {empData && empData.map((user) => (
-                // <div className='flex flex-row justify-between border-b-'>
-                //     <div className='flex flex-row bg-gray-300 w-full border-b-2 border-blue-400 space-x-3 '>
-                //         <p className='text-2xl m-2'>{user.name}</p>
-                //         <p className='text-2xl m-2'>{user.surname}</p>
-                //         <p className='text-2xl m-2'>{user.position}</p>
-                //         <p className='text-2xl m-2'>{user.salary}zł</p>
-                //         <p className='text-2xl m-2'>{user.tasks_done}</p>
-                //         <button className='" mb-1 inline-block rounded bg-yellow-500 px-3 pt-1 pb-1 text-xs font-medium uppercase leading-normal
-                //                 text-white shadow-[0_4px_9px_-4px_#3b71ca] 
-                //                   transition duration-150 ease-in-out hover:bg-sidebarbluehover hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
-                //                   focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
-                //                   active:bg-blue-200 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]' 
-                //                   type="button">Edytuj
-                //         </button>
-                //         <Button onClick={() => {}}>Usuń</Button>
-                //         </div>
-                //     </div>         
+            {empData && empData.map((user) => (    
             <tbody>
                 <tr key={user.id}>
                     <td className='border px-4 py-2'>{user.name}</td>
@@ -101,15 +162,15 @@ useEffect(() => {
                     <td className='border px-4 py-2'>{user.salary}zł</td>
                     <td className='border px-4 py-2'>{user.tasks_done}</td>
                     <td className=' m-2'>
-                        <button className='group bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button  onClick={() => handleEditClick(user)} className='group bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-yellow-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <SlNote className=''></SlNote>
-                        <span className='tooltip-btn group-hover:scale-100'>Edytuj</span>
+                        <span className=' tooltip-btn group-hover:scale-100'>Edytuj</span>
                         </button>
                     </td>
                     <td className=' m-2'>
-                        <button className='group bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button className='.del-form group bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <ImCross></ImCross>
@@ -122,6 +183,95 @@ useEffect(() => {
         </table>    
         </div>
         </div>
-        </div> 
+        </div>
+        {/*  */}
+        {/* create side panel that slides in from right */}
+        <nav className={`navbar absolute top-0 right-0 bg-sidebarblue w-96 h-full shadow-xl rounded-l-2xl ${
+          panelHidden ? "hidden" : "translatex-12"
+        } transition duration-150 ease-in-out`}>
+          <div className='grid grid-flow-col' >
+          <ImCross onClick={movepanel} className=' ml-2 mt-2 justify-self-start text-white hover:cursor-pointer hover:text-red-500'></ImCross>
+          </div>
+          <form className='addemp-form'>
+            <div className='mt-24 grid grid-flow-row'>
+              <p className='text-white text-2xl justify-self-center'>Dodaj pracownika:</p>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Imię:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Jan"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Nazwisko:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Kowalski"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Stanowisko:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Pracownik"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Team:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Web"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Wypłata:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={"3500"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Hasło:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"worker"} ></input>
+          </div>
+          <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
+                    font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
+                    place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
+                    <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Dodaj pracownika
+                </button>
+          <div>
+          </div>
+          </div>
+          </form>
+        </nav>
+        <nav className={`navbaredit absolute top-0 right-0 bg-sidebarblue w-96 h-full shadow-xl rounded-l-2xl ${
+          editpanelHidden ? "hidden" : "translatex-12"
+        } transition duration-150 ease-in-out`}>
+          <div className='grid grid-flow-col' >
+          <ImCross onClick={() => seteditPanelHidden(true)} className=' ml-2 mt-2 justify-self-start text-white hover:cursor-pointer hover:text-red-500'></ImCross>
+          </div>
+          <form className='editemp-form'>
+            <div className='mt-24 grid grid-flow-row'>
+              <p className='text-white text-2xl justify-self-center'>edytuj pracownika:</p>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Imię:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.name : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Nazwisko:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.surname : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Stanowisko:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.position : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Team:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.team : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Wypłata:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={selectedEmployee ? selectedEmployee.salary : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Hasło:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.password : ""} ></input>
+          </div>
+          <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
+                    font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
+                    place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
+                    <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zapisz zmiany
+                </button>
+          <div>
+          </div>
+          </div>
+          </form>
+        </nav>  
+        </>
         );};
 export default Employees;

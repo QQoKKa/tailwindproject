@@ -1,6 +1,8 @@
 import {MdTaskAlt} from 'react-icons/md';
 import {useEffect, useState } from 'react';
 import {TbTextPlus} from 'react-icons/tb';
+import {ImCross} from 'react-icons/im';
+import {IoMdCheckmark} from 'react-icons/io';
 import {SlNote} from 'react-icons/sl';
 import {IoIosCheckmarkCircle} from 'react-icons/io';
 import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
@@ -8,6 +10,9 @@ import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbe
 const Tasks = () => {
     const [empData, setEmpData] = useState(null);
     const [tasksData, setTasksData] = useState(null);
+    const [panelHidden, setPanelHidden] = useState(true);
+    const [editpanelHidden, seteditPanelHidden] = useState(true);
+    const [selectedTask, setSelectedTask] = useState(null);
 
 useEffect(() => {
   async function getDataFromCollections() {
@@ -77,14 +82,29 @@ const renderPriority = (priority) => {
   }
 };
 
+function movepanel() {
+  const panel = document.querySelector(".navbar");
+  panel.classList.toggle("hidden");
+  setPanelHidden(!panelHidden);
+}
+
+const handleEditClick = (task) => {
+  const editpanel = document.querySelector(".navbaredit");
+  editpanel.classList.toggle("hidden");
+  setSelectedTask(task);
+  seteditPanelHidden(!editpanelHidden);
+}
+
+
     return (       
+      <>
         <div className="bg-gray-100 min-h-screen p-4  
         flex flex-auto justify-center items-center"> 
         <div className=" bg-white h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
         <div className='border-b-4 border-btnpurple grid'>
         <MdTaskAlt className='' size={100} color='#ECC1FF' />
         <div className='grid grid-flow-col'>
-        <button className='relative group ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+        <button onClick={movepanel} className='relative group ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-btnpurpleclick active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><TbTextPlus size={"32px"} color='white'></TbTextPlus>
                                     <span className='tooltip-btn group-hover:scale-100'>Dodaj zadanie</span>
@@ -115,11 +135,11 @@ const renderPriority = (priority) => {
                         <td className='border-2 px-4 py-2'>{new Date(task.deadline * 1000).toLocaleString()}</td>
                         <td className='border-2 px-4 py-2'>{renderStatus(task.status)}</td>
                         <td className=' m-2'>
-                        <button className=' group bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button onClick={() => handleEditClick(task)} className='  group bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-yellow-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <SlNote size={20}></SlNote>
-                        <span className='tooltip-btn group-hover:scale-100'>Edytuj</span>
+                        <span className=' tooltip-btn group-hover:scale-100'>Edytuj</span>
                         </button>
                         </td>
                     <td className=' m-2'>
@@ -128,7 +148,7 @@ const renderPriority = (priority) => {
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <IoIosCheckmarkCircle size={20}></IoIosCheckmarkCircle>
-                        <span className='tooltip-btn group-hover:scale-100'>Zakończ</span>
+                        <span className=' tooltip-btn group-hover:scale-100'>Zakończ</span>
                         </button>
                  ) : (
                   //button gone
@@ -141,8 +161,94 @@ const renderPriority = (priority) => {
         </table>
         </div>
         </div>           
-
-</div> );
-
-};
+        </div>
+        {/*  */}
+        <nav className={`navbar absolute top-0 right-0 bg-sidebarblue w-96 h-full shadow-xl rounded-l-2xl ${
+          panelHidden ? "hidden" : "translatex-12"
+        } transition duration-150 ease-in-out`}>
+          <div className='grid grid-flow-col' >
+          <ImCross onClick={movepanel} className=' ml-2 mt-2 justify-self-start text-white hover:cursor-pointer hover:text-red-500'></ImCross>
+          </div>
+          <form>
+            <div className='mt-24 grid grid-flow-row'>
+              <p className='text-white text-2xl justify-self-center'>Dodaj Zadanie:</p>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Nazwa:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"ZadanieX"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Opis:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Opis ZadaniaX"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Team:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Web"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Pracownik:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"worker1"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Ważność:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={"0"} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>deadline:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='name' defaultValue={"XX:XX XX-XX-XXXX"} ></input>
+          </div>
+          <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
+                    font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
+                    place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
+                    <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Dodaj Zadanie
+                </button>
+          <div>
+          </div>
+          </div>
+          </form>
+        </nav>
+        <nav className={`navbaredit absolute top-0 right-0 bg-sidebarblue w-96 h-full shadow-xl rounded-l-2xl ${
+          editpanelHidden ? "hidden" : "translatex-12"
+        } transition duration-150 ease-in-out`}>
+          <div className='grid grid-flow-col' >
+          <ImCross onClick={() => seteditPanelHidden(true)} className=' ml-2 mt-2 justify-self-start text-white hover:cursor-pointer hover:text-red-500'></ImCross>
+          </div>
+          <form>
+            <div className='mt-24 grid grid-flow-row'>
+              <p className='text-white text-2xl justify-self-center'>edytuj pracownika:</p>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Nazwa:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.name : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Opis:</label>
+          <input className='break-words mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.description : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Team:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.team : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Pracownik:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.emp_id : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Ważność:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={selectedTask ? selectedTask.priority : ""} ></input>
+          </div>
+          <div className='grid grid-flow-col'>
+          <label className='font-bold text-lg text-white ml-2'>Deadline:</label>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='name' defaultValue={selectedTask ? selectedTask.deadline : ""} ></input>
+          </div>
+          <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
+                    font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
+                    place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
+                    <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zapisz zmiany
+                </button>
+          <div>
+          </div>
+          </div>
+          </form>
+        </nav>  
+</> 
+);};
 export default Tasks;

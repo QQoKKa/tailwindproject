@@ -16,7 +16,7 @@ import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from './dbem
 // }
 //getDocsFromCollection();
 
-
+  
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
