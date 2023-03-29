@@ -39,7 +39,7 @@ const Sidebar = () => {
             {userData && <p className='text-center'>{userData[0].name + " " +userData[0].surname}</p>}
             <div className='h-1 bg-infored'></div>
            <a href='/'> <SidebarIcon Icon={<FaPoo size="50"/>} text='główny panel'/> </a>
-           <a href='/finances'> <SidebarIcon Icon={<MdAttachMoney size="50"/>} text='finanse'/></a>
+           <a href='/test'> <SidebarIcon Icon={<MdAttachMoney size="50"/>} text='finanse'/></a>
            <a href='/employees'> <SidebarIcon Icon={<BsFillPeopleFill size="50"/>} text='pracownicy'/> </a>
            <a href='/tasks'> <SidebarIcon Icon={<FaTasks size="50"/>} text='zadania'/> </a>
         </div>

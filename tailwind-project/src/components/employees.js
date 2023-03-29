@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import {ImCross} from 'react-icons/im';
 import {IoMdCheckmark} from 'react-icons/io';
 import {SlNote} from 'react-icons/sl';
-import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, setDoc} from '../dbemp';
 
 const Employees = () => {
     const [empID, setEmpID] = useState([]);
-    const [empData, setEmpData] = useState(null);
+    const [empData, setEmpData] = useState([]);
     const [tasksData, setTasksData] = useState(null);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [panelHidden, setPanelHidden] = useState(true);
@@ -82,42 +82,65 @@ useEffect(() => {
         seteditPanelHidden(!editpanelHidden);
       }
       //add
-      window.onload = function() {
-      const addempForm = document.querySelector(".addemp-form");
-      addempForm.addEventListener("submit", (e) => {
-        console.log("start");
-        e.preventDefault();
+      // window.onload = function() {
+      // const addempForm = document.querySelector(".addemp-form");
+      // addempForm.addEventListener("submit", (e) => {
+      //   console.log("start");
+      //   e.preventDefault();
         
-        const empRef = collection(db, "emp");
+      //   const empRef = collection(db, "emp");
 
-          addDoc (empRef, {
-          // name:  addempForm.name.value,
-          // surname:  addempForm.surname.value,
-          // position:  addempForm.position.value,
-          // team:  addempForm.team.value,
-          // salary:  addempForm.salary.value,
-          // login: "worker3",
-          // password:  addempForm.password.value,
-          // tasks_done: 0,
-          name:  "jan",
-          // surname:  "Kowalski",
-          // position:  "programista",
-          // team:  "IT",
-          // salary:  3500,
-          // login: "worker3",
-          // password:  "1234",
-          // tasks_done: 0,
-          })
-          .then(() => {
-            console.log("Document successfully written!");
-            addempForm.reset();
-          })
-        console.log("end");
-        })
-      } 
+      //     addDoc (empRef, {
+      //     // name:  addempForm.name.value,
+      //     // surname:  addempForm.surname.value,
+      //     // position:  addempForm.position.value,
+      //     // team:  addempForm.team.value,
+      //     // salary:  addempForm.salary.value,
+      //     // login: "worker3",
+      //     // password:  addempForm.password.value,
+      //     // tasks_done: 0,
+      //     name:  "jan",
+      //     // surname:  "Kowalski",
+      //     // position:  "programista",
+      //     // team:  "IT",
+      //     // salary:  3500,
+      //     // login: "worker3",
+      //     // password:  "1234",
+      //     // tasks_done: 0,
+      //     })
+      //     .then(() => {
+      //       console.log("Document successfully written!");
+      //       addempForm.reset();
+      //     })
+      //   console.log("end");
+      //   })
+      // } 
+
+      useEffect(() => {
+        const addEmp = document.querySelector('.addemp-form');
+        addEmp.addEventListener('submit', (e) => {
+            e.preventDefault();
+            totalWorkers = empData.length;
+            const workersID = totalWorkers+1;
+            const empRef = collection(db, "emp");
+            const customId = 'worker'+workersID; // Replace with your custom ID
+            const empDocRef = doc(empRef, customId);
+            setDoc(empDocRef, {
+                login: customId,
+                name: addEmp.name.value,
+                surname: addEmp.surname.value,
+                salary: addEmp.salary.value,
+                tasks_done: 0,
+                password: addEmp.password.value,
+                team: addEmp.team.value,
+                position: addEmp.position.value
+            }).then(() => {
+                console.log('Document successfully written!');
+            });
+        });
+    }, [empData]);
       //delete
       const deleteempForm = document.querySelector(".del-form");
-
       //edit
       const editempForm = document.querySelector(".editemp-form");
 
@@ -125,7 +148,7 @@ useEffect(() => {
       <>
         <div className="bg-gray-100 min-h-screen p-4  
         flex flex-auto justify-center items-center"> 
-        <div className=" bg-white h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
+        <div className=" bg-white max-h-[600px] h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
         <div className=' border-b-4 border-blue-500 grid'>
         <BsFillPersonFill className=' self-end' size={120} color='#3B82F6' />
         <div className='grid grid-flow-col'>
@@ -137,9 +160,9 @@ useEffect(() => {
         <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Pracownicy: {totalWorkers}</p>
         </div>
         </div>
-        <div>
+        <div className='overflow-y-auto max-h-[400px]'>
             {/* create list of workers using empData */}
-        <table className='table-auto mx-auto'>
+        <table className=' table-auto mx-auto'>
             <thead>
                 <tr>
                     <th className='px-4 py-2'>Name</th>
@@ -170,7 +193,7 @@ useEffect(() => {
                         </button>
                     </td>
                     <td className=' m-2'>
-                        <button className='.del-form group bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button className='del-form group bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <ImCross></ImCross>
@@ -197,27 +220,27 @@ useEffect(() => {
               <p className='text-white text-2xl justify-self-center'>Dodaj pracownika:</p>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Imię:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Jan"} ></input>
+          <input name="name" className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' defaultValue={"Jan"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Nazwisko:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Kowalski"} ></input>
+          <input name="surname" className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' defaultValue={"Kowalski"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Stanowisko:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Pracownik"} ></input>
+          <input name="position" className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' defaultValue={"Pracownik"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Team:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Web"} ></input>
+          <input name="team" className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' defaultValue={"Web"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Wypłata:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={"3500"} ></input>
+          <input name="salary" className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' defaultValue={"3500"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Hasło:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"worker"} ></input>
+          <input name="password" className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' defaultValue={"worker"} ></input>
           </div>
           <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
