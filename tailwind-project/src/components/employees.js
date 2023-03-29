@@ -118,9 +118,9 @@ useEffect(() => {
 
       useEffect(() => {
         const addEmp = document.querySelector('.addemp-form');
-        addEmp.addEventListener('submit', (e) => {
+        const handleSubmit = (e) => {
             e.preventDefault();
-            totalWorkers = empData.length;
+            let totalWorkers = empData.length;
             const workersID = totalWorkers+1;
             const empRef = collection(db, "emp");
             const customId = 'worker'+workersID; // Replace with your custom ID
@@ -134,14 +134,56 @@ useEffect(() => {
                 password: addEmp.password.value,
                 team: addEmp.team.value,
                 position: addEmp.position.value
-            }).then(() => {
+              }).then(() => {
                 console.log('Document successfully written!');
-            });
+                 window.location.reload();
+              });
+            };
+            addEmp.addEventListener('submit', handleSubmit);
+            return () => {
+              addEmp.removeEventListener('submit', handleSubmit);
+            }
+          }, [empData]);
+          
+          
+          
+          
+      // delete
+
+      // const deleteempForm = document.querySelector(".del-form");
+      // const docref = doc(db, "emp", deleteempForm.login.value);
+      // deleteDoc(docref).then(() => {
+      //   console.log("Document successfully deleted!");
+      // }).catch((error) => {
+      //   console.error("Error removing document: ", error);
+      // });
+      // //edit
+
+
+      // function deleteEMP(empIdToDelete) {
+      //   const docref = doc(db, "emp", empIdToDelete);
+      //   deleteDoc(docref).then(() => {
+      //     console.log("Document successfully deleted!");
+      //     window.location.reload();
+      //   }).catch((error) => {
+      //     console.error("Error removing document: ", error);
+      //   });
+      // }
+
+      const handleDelete = (login) => {
+        deleteEmp(login);
+      }
+
+      const deleteEmp = (login) => {
+        const docref = doc(db, "emp", login);
+        deleteDoc(docref).then(() => {
+          console.log("Document successfully deleted!");
+          window.location.reload();
+        }).catch((error) => {
+          console.error("Error removing document: ", error);
         });
-    }, [empData]);
-      //delete
-      const deleteempForm = document.querySelector(".del-form");
-      //edit
+      }
+
       const editempForm = document.querySelector(".editemp-form");
 
     return (       
@@ -160,7 +202,7 @@ useEffect(() => {
         <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Pracownicy: {totalWorkers}</p>
         </div>
         </div>
-        <div className='overflow-y-auto max-h-[400px]'>
+        <div className='overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-blue-500 scrollbar-thumb-rounded-md hover:scrollbar-thumb-blue-700'>
             {/* create list of workers using empData */}
         <table className=' table-auto mx-auto'>
             <thead>
@@ -193,7 +235,7 @@ useEffect(() => {
                         </button>
                     </td>
                     <td className=' m-2'>
-                        <button className='del-form group bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button onClick={() => handleDelete(user.login)} className='del-form group bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <ImCross></ImCross>
