@@ -5,11 +5,11 @@ import {ImCross} from 'react-icons/im';
 import {IoMdCheckmark} from 'react-icons/io';
 import {SlNote} from 'react-icons/sl';
 import {IoIosCheckmarkCircle} from 'react-icons/io';
-import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
+import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc, setDoc} from '../dbemp';
 
 const Tasks = () => {
-    const [empData, setEmpData] = useState(null);
-    const [tasksData, setTasksData] = useState(null);
+    const [empData, setEmpData] = useState([]);
+    const [tasksData, setTasksData] = useState([]);
     const [panelHidden, setPanelHidden] = useState(true);
     const [editpanelHidden, seteditPanelHidden] = useState(true);
     const [selectedTask, setSelectedTask] = useState(null);
@@ -95,6 +95,61 @@ const handleEditClick = (task) => {
   seteditPanelHidden(!editpanelHidden);
 }
 
+useEffect(() => {
+  const add_task = document.querySelector('.add_task');
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      const tasksRef = collection(db, "tasks");
+      const tasksDocRef = doc(tasksRef);
+      setDoc(tasksDocRef, {
+          name: add_task.name.value,
+          description: add_task.description.value,
+          emp_id: add_task.emp_id.value,
+          priority: add_task.priority.value,
+          deadline: add_task.deadline.value,
+          team: add_task.team.value,
+          status: 0,
+          
+        }).then(() => {
+          console.log('Document successfully written!');
+          window.location.reload();
+        });
+      };
+      add_task.addEventListener('submit', handleSubmit);
+      return () => {
+        add_task.removeEventListener('submit', handleSubmit);
+      }
+    }, [tasksData]);
+    
+    useEffect(() => {
+      const editTask = document.querySelector('.edit_tasks');
+      const handleSubmit = (e) => {
+          e.preventDefault();
+          let taskID = selectedTask.id;
+          const taskRef = collection(db, "tasks");
+          const taskDocRef = doc(taskRef, taskID);
+          console.log(taskID)
+          updateDoc(taskDocRef, {
+              name: editTask.name.value,
+              description: editTask.description.value,
+              emp_id: editTask.emp_id.value,
+              priority: editTask.priority.value,
+              deadline:  editTask.deadline.value,
+              team: editTask.team.value,
+           
+            }).then(() => {
+              console.log('Document successfully written!');
+              // window.location.reload();
+            });
+          };
+          editTask.addEventListener('submit', handleSubmit);
+          return () => {
+            editTask.removeEventListener('submit', handleSubmit);
+          }
+        }, [selectedTask]);
+
+    
+
 
     return (       
       <>
@@ -169,7 +224,7 @@ const handleEditClick = (task) => {
           <div className='grid grid-flow-col' >
           <ImCross onClick={movepanel} className=' ml-2 mt-2 justify-self-start text-white hover:cursor-pointer hover:text-red-500'></ImCross>
           </div>
-          <form>
+          <form className="add_task">
             <div className='mt-24 grid grid-flow-row'>
               <p className='text-white text-2xl justify-self-center'>Dodaj Zadanie:</p>
           <div className='grid grid-flow-col'>
@@ -178,23 +233,23 @@ const handleEditClick = (task) => {
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Opis:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Opis ZadaniaX"} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='description' defaultValue={"Opis ZadaniaX"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Team:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"Web"} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='team' defaultValue={"Web"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Pracownik:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={"worker1"} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={"worker1"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Ważność:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={"0"} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='priority' defaultValue={"0"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>deadline:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='name' defaultValue={"XX:XX XX-XX-XXXX"} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='deadline' defaultValue={"XX:XX XX-XX-XXXX"} ></input>
           </div>
           <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
@@ -212,34 +267,34 @@ const handleEditClick = (task) => {
           <div className='grid grid-flow-col' >
           <ImCross onClick={() => seteditPanelHidden(true)} className=' ml-2 mt-2 justify-self-start text-white hover:cursor-pointer hover:text-red-500'></ImCross>
           </div>
-          <form>
+          <form className="edit_tasks">
             <div className='mt-24 grid grid-flow-row'>
-              <p className='text-white text-2xl justify-self-center'>edytuj pracownika:</p>
+              <p className='text-white text-2xl justify-self-center'> Edytuj zadanie :</p>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Nazwa:</label>
           <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.name : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Opis:</label>
-          <input className='break-words mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.description : ""} ></input>
+          <input className='break-words mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='description' defaultValue={selectedTask ? selectedTask.description : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Team:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.team : ""} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='team' defaultValue={selectedTask ? selectedTask.team : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Pracownik:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedTask ? selectedTask.emp_id : ""} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={selectedTask ? selectedTask.emp_id : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Ważność:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={selectedTask ? selectedTask.priority : ""} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='priority' defaultValue={selectedTask ? selectedTask.priority : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Deadline:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='name' defaultValue={selectedTask ? selectedTask.deadline : ""} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='deadline' defaultValue={selectedTask ? selectedTask.deadline : ""} ></input>
           </div>
-          <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
+          <button   class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
                     place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
                     <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zapisz zmiany
