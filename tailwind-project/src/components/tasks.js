@@ -81,9 +81,9 @@ const getTaskWorker = (task) => {
 
 const renderStatus = (status) => {
   if (status === 0) {
-    return "working🦽⛽♨🌝🌖🌗🌊";
+    return "working⌛";
   } else {
-    return "done⚖💱💲💹💲💲";
+    return "done✔";
   }
 };
 
@@ -190,8 +190,7 @@ useEffect(() => {
         <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Zadania: {totalTasks}</p>
         </div>
         </div>
-        <div>
-            {/* create table */}
+        <div className='overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-btnpurple scrollbar-thumb-rounded-md hover:scrollbar-thumb-btnpurplehover'>
         <table className='table-auto mx-auto'>
             <thead>
                 <tr>
@@ -265,15 +264,27 @@ useEffect(() => {
           <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='team' defaultValue={"Web"} ></input>
           </div>
           <div className='grid grid-flow-col'>
-          <label className='font-bold text-lg text-white ml-2'>Pracownik:</label><input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={"worker1"} ></input>
+          <label className='font-bold text-lg text-white ml-2'>Pracownik:
+          </label>
+          {/* make a select that gets empData.name and surname */}
+          <select className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' name='emp_id'>
+            {empData.map((emp) => (
+              <option value={emp.login}>{emp.name} {emp.surname}</option>
+            ))}
+          </select>
+          {/* <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={"worker1"} ></input> */}
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Ważność:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='priority' defaultValue={"0"} ></input>
+            <select className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' name='priority'>
+              <option value={0}>low</option>
+              <option value={1}>medium</option>
+              <option value={2}>high</option>
+            </select>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>deadline:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='deadline' defaultValue={"XX-XX-XXXX"} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='deadline' defaultValue={"2023-08-22"} ></input>
           </div>
           <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
@@ -308,11 +319,20 @@ useEffect(() => {
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Pracownik:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={selectedTask ? selectedTask.emp_id : ""} ></input>
+          {/* <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={selectedTask ? selectedTask.emp_id : ""} ></input> */}
+          <select className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' name='emp_id'>
+            {empData.map((emp) => (
+              <option value={emp.login}>{emp.name} {emp.surname}</option>
+            ))}
+          </select>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Ważność:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='priority' defaultValue={selectedTask ? selectedTask.priority : ""} ></input>
+          <select className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' name='priority'>
+              <option value={0}>low</option>
+              <option value={1}>medium</option>
+              <option value={2}>high</option>
+            </select>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Deadline:</label>
