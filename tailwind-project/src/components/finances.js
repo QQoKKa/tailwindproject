@@ -52,7 +52,7 @@ let year = date.getFullYear();
                                 <p className='place-self-end'>Przychody: {income}zł</p>
                             </div>
                             <div className=' grid font-bold m-12 mt-[-55px] mb-40 border-b-2 border-underscoregreen'>
-                                <p><Button >edit</Button> Saldo z poprzedniego miesiąca: {saldo}zł </p>
+                                <p><Button >Edytuj</Button> Saldo z poprzedniego miesiąca: {saldo}zł </p>
                                 <p className=' place-self-end '> Saldo: {saldo}zł </p>
                                 </div>
                             <div className=' grid font-bold m-12 mt-[-55px] mb-40 border-b-2 border-underscoregreen'>

@@ -82,40 +82,6 @@ useEffect(() => {
         seteditPanelHidden(!editpanelHidden);
       }
       //add
-      // window.onload = function() {
-      // const addempForm = document.querySelector(".addemp-form");
-      // addempForm.addEventListener("submit", (e) => {
-      //   console.log("start");
-      //   e.preventDefault();
-        
-      //   const empRef = collection(db, "emp");
-
-      //     addDoc (empRef, {
-      //     // name:  addempForm.name.value,
-      //     // surname:  addempForm.surname.value,
-      //     // position:  addempForm.position.value,
-      //     // team:  addempForm.team.value,
-      //     // salary:  addempForm.salary.value,
-      //     // login: "worker3",
-      //     // password:  addempForm.password.value,
-      //     // tasks_done: 0,
-      //     name:  "jan",
-      //     // surname:  "Kowalski",
-      //     // position:  "programista",
-      //     // team:  "IT",
-      //     // salary:  3500,
-      //     // login: "worker3",
-      //     // password:  "1234",
-      //     // tasks_done: 0,
-      //     })
-      //     .then(() => {
-      //       console.log("Document successfully written!");
-      //       addempForm.reset();
-      //     })
-      //   console.log("end");
-      //   })
-      // } 
-
       useEffect(() => {
         const addEmp = document.querySelector('.addemp-form');
         const handleSubmit = (e) => {
@@ -149,27 +115,6 @@ useEffect(() => {
           
           
       // delete
-
-      // const deleteempForm = document.querySelector(".del-form");
-      // const docref = doc(db, "emp", deleteempForm.login.value);
-      // deleteDoc(docref).then(() => {
-      //   console.log("Document successfully deleted!");
-      // }).catch((error) => {
-      //   console.error("Error removing document: ", error);
-      // });
-      // //edit
-
-
-      // function deleteEMP(empIdToDelete) {
-      //   const docref = doc(db, "emp", empIdToDelete);
-      //   deleteDoc(docref).then(() => {
-      //     console.log("Document successfully deleted!");
-      //     window.location.reload();
-      //   }).catch((error) => {
-      //     console.error("Error removing document: ", error);
-      //   });
-      // }
-
       const handleDelete = (login) => {
         deleteEmp(login);
       }
@@ -184,28 +129,6 @@ useEffect(() => {
         });
       }
       //create edit form that edits the selected employee
-      // const handleEdit = (login) => {
-      //       editEmp(login)
-      // }
-      // const editEmp = (login) => {
-      //   const editForm = document.querySelector(".edit-form");
-      //     const docref = doc(db, "emp", login);
-      //     setDoc(docref, {
-      //       name: editForm.name.value,
-      //       surname: editForm.surname.value,
-      //       position: editForm.position.value,
-      //       team: editForm.team.value,
-      //       salary: editForm.salary.value,
-      //       password: editForm.password.value,
-      //     }).then(() => {
-      //       // console.log("Document successfully updated!");
-      //       // window.location.reload();
-      //     });
-      // }
-
-
-
-
 
       useEffect(() => {
         const editEmp = document.querySelector('.editemp-form');
@@ -219,7 +142,7 @@ useEffect(() => {
                 login: login,
                 name: editEmp.name.value,
                 surname: editEmp.surname.value,
-                salary: editEmp.salary.value,
+                salary: parseInt(editEmp.salary.value),
                 password: editEmp.password.value,
                 team: editEmp.team.value,
                 position: editEmp.position.value,

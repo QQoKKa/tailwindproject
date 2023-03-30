@@ -13,6 +13,7 @@ const Tasks = () => {
     const [panelHidden, setPanelHidden] = useState(true);
     const [editpanelHidden, seteditPanelHidden] = useState(true);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [error, setError] = useState(null);
 
 useEffect(() => {
   async function getDataFromCollections() {
@@ -28,13 +29,14 @@ useEffect(() => {
     const empData = [];
     empSnap.forEach((doc) => {
       empData.push(doc.data());
-      console.log();
+      
     });
     setEmpData(empData);
 
     const tasksData = [];
     tasksSnap.forEach((doc) => {
       tasksData.push({id: doc.id, ...doc.data()});
+      console.log(doc.data)
     });
     setTasksData(tasksData);
   }
@@ -43,7 +45,26 @@ useEffect(() => {
     // Handle any errors that occur
     console.error(error);
   });
-}, []);
+}, [])
+
+
+
+const renderPriority = (priority) => {
+  switch (priority) {
+  case 0:
+    return "low";
+  case 1:
+    return "medium";
+  case 2:
+    return "high";
+  default:
+    return "low";
+  }
+};
+
+
+//count totaltasks
+const totalTasks = tasksData.length;
 
 const timestamp = 1618675200; // Unix timestamp in seconds
 const date = new Date(timestamp * 1000); // Convert to milliseconds and create Date object
@@ -56,29 +77,13 @@ const getTaskWorker = (task) => {
 };
 
 
-let totaltasks =  0;
-if(empData){
-  totaltasks = empData.length;
-}
+
 
 const renderStatus = (status) => {
   if (status === 0) {
-    return "working";
+    return "working🦽⛽♨🌝🌖🌗🌊";
   } else {
-    return "done";
-  }
-};
-
-const renderPriority = (priority) => {
-  switch (priority) {
-  case 0:
-    return "low";
-  case 1:
-    return "medium";
-  case 2:
-    return "high";
-  default:
-    return "low";
+    return "done⚖💱💲💹💲💲";
   }
 };
 
@@ -105,10 +110,11 @@ useEffect(() => {
           name: add_task.name.value,
           description: add_task.description.value,
           emp_id: add_task.emp_id.value,
-          priority: add_task.priority.value,
+          priority: parseInt(add_task.priority.value),
           deadline: add_task.deadline.value,
           team: add_task.team.value,
           status: 0,
+
           
         }).then(() => {
           console.log('Document successfully written!');
@@ -128,18 +134,18 @@ useEffect(() => {
           let taskID = selectedTask.id;
           const taskRef = collection(db, "tasks");
           const taskDocRef = doc(taskRef, taskID);
-          console.log(taskID)
+          
           updateDoc(taskDocRef, {
               name: editTask.name.value,
               description: editTask.description.value,
               emp_id: editTask.emp_id.value,
-              priority: editTask.priority.value,
+              priority: parseInt(editTask.priority.value),
               deadline:  editTask.deadline.value,
               team: editTask.team.value,
            
             }).then(() => {
               console.log('Document successfully written!');
-              // window.location.reload();
+              window.location.reload();
             });
           };
           editTask.addEventListener('submit', handleSubmit);
@@ -147,7 +153,24 @@ useEffect(() => {
             editTask.removeEventListener('submit', handleSubmit);
           }
         }, [selectedTask]);
-
+            //TO-DO create function that gets amount of tasks with status 1, checks how many tasks are made by employee and then sets this amount to employee's tasksDone
+            
+              const handleStatus = (id) => {
+                editStatus(id);
+              }
+        
+              const editStatus = (id) => {
+                const docref = doc(db, "tasks", id);
+                updateDoc(docref, {
+                  status: 1,
+                })
+                .then(() => {
+                  console.log("Document successfully deleted!");
+                  window.location.reload();
+                }).catch((error) => {
+                  console.error("Error removing document: ", error);
+                });
+              }
     
 
 
@@ -159,12 +182,12 @@ useEffect(() => {
         <div className='border-b-4 border-btnpurple grid'>
         <MdTaskAlt className='' size={100} color='#ECC1FF' />
         <div className='grid grid-flow-col'>
-        <button onClick={movepanel} className='relative group ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+        <button onClick={movepanel} className=' relative group ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-btnpurpleclick active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><TbTextPlus size={"32px"} color='white'></TbTextPlus>
                                     <span className='tooltip-btn group-hover:scale-100'>Dodaj zadanie</span>
                                    </button>
-        <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Zadania: {totaltasks}</p>
+        <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Zadania: {totalTasks}</p>
         </div>
         </div>
         <div>
@@ -180,14 +203,15 @@ useEffect(() => {
                     <th className=''>Status</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className='doneTask'>
                 {tasksData && tasksData.map((task) => (
                     <tr key={task.id}>
                         <td className='border-2 px-4 py-2'>{task.name}</td>
                         <td className='border-2 px-4 py-2'>{task.description}</td>
                         <td className='border-2 px-4 py-2'>{getTaskWorker(task)}</td>
                         <td className='border-2 px-4 py-2'>{renderPriority(task.priority)}</td>
-                        <td className='border-2 px-4 py-2'>{new Date(task.deadline * 1000).toLocaleString()}</td>
+                      
+                        <td className='border-2 px-4 py-2'>{(task.deadline).toLocaleString()}</td>
                         <td className='border-2 px-4 py-2'>{renderStatus(task.status)}</td>
                         <td className=' m-2'>
                         <button onClick={() => handleEditClick(task)} className='  group bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
@@ -199,7 +223,8 @@ useEffect(() => {
                         </td>
                     <td className=' m-2'>
                         {task.status === 0 ? (
-                        <button className='group bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+                        <button onClick={() => handleStatus(task.id)}
+                        className='mark-as-done-button finish-button group bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>
                         <IoIosCheckmarkCircle size={20}></IoIosCheckmarkCircle>
@@ -240,8 +265,7 @@ useEffect(() => {
           <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='team' defaultValue={"Web"} ></input>
           </div>
           <div className='grid grid-flow-col'>
-          <label className='font-bold text-lg text-white ml-2'>Pracownik:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={"worker1"} ></input>
+          <label className='font-bold text-lg text-white ml-2'>Pracownik:</label><input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='emp_id' defaultValue={"worker1"} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Ważność:</label>
@@ -249,7 +273,7 @@ useEffect(() => {
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>deadline:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='deadline' defaultValue={"XX:XX XX-XX-XXXX"} ></input>
+          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='date' name='deadline' defaultValue={"XX-XX-XXXX"} ></input>
           </div>
           <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
