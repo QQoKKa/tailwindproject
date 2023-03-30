@@ -183,8 +183,58 @@ useEffect(() => {
           console.error("Error removing document: ", error);
         });
       }
+      //create edit form that edits the selected employee
+      // const handleEdit = (login) => {
+      //       editEmp(login)
+      // }
+      // const editEmp = (login) => {
+      //   const editForm = document.querySelector(".edit-form");
+      //     const docref = doc(db, "emp", login);
+      //     setDoc(docref, {
+      //       name: editForm.name.value,
+      //       surname: editForm.surname.value,
+      //       position: editForm.position.value,
+      //       team: editForm.team.value,
+      //       salary: editForm.salary.value,
+      //       password: editForm.password.value,
+      //     }).then(() => {
+      //       // console.log("Document successfully updated!");
+      //       // window.location.reload();
+      //     });
+      // }
 
-      const editempForm = document.querySelector(".editemp-form");
+
+
+
+
+      useEffect(() => {
+        const editEmp = document.querySelector('.editemp-form');
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            const login = selectedEmployee.login;
+            const empRef = collection(db, "emp");
+            const empDocRef = doc(empRef, login);
+            console.log(login);
+            updateDoc(empDocRef, {
+                login: login,
+                name: editEmp.name.value,
+                surname: editEmp.surname.value,
+                salary: editEmp.salary.value,
+                password: editEmp.password.value,
+                team: editEmp.team.value,
+                position: editEmp.position.value,
+              }).then(() => {
+                console.log('Document successfully written!');
+                // window.location.reload();
+              });
+            };
+            editEmp.addEventListener('submit', handleSubmit);
+            return () => {
+              editEmp.removeEventListener('submit', handleSubmit);
+            }
+          }, [selectedEmployee]);
+
+      
 
     return (       
       <>
@@ -305,29 +355,41 @@ useEffect(() => {
               <p className='text-white text-2xl justify-self-center'>edytuj pracownika:</p>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Imię:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.name : ""} ></input>
+          <input 
+                 className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' 
+                 type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.name : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Nazwisko:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.surname : ""} ></input>
+          <input 
+                 className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500'
+                 type='text' name='surname' defaultValue={selectedEmployee ? selectedEmployee.surname : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Stanowisko:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.position : ""} ></input>
+          <input 
+                 className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' 
+                 type='text' name='position' defaultValue={selectedEmployee ? selectedEmployee.position : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Team:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.team : ""} ></input>
+          <input 
+                 className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' 
+                 type='text' name='team' defaultValue={selectedEmployee ? selectedEmployee.team : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Wypłata:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='number' name='name' defaultValue={selectedEmployee ? selectedEmployee.salary : ""} ></input>
+          <input 
+                 className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' 
+                 type='number' name='salary' defaultValue={selectedEmployee ? selectedEmployee.salary : ""} ></input>
           </div>
           <div className='grid grid-flow-col'>
           <label className='font-bold text-lg text-white ml-2'>Hasło:</label>
-          <input className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' type='text' name='name' defaultValue={selectedEmployee ? selectedEmployee.password : ""} ></input>
+          <input 
+                 className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' 
+                 type='text' name='password' defaultValue={selectedEmployee ? selectedEmployee.password : ""} ></input>
           </div>
-          <button type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
+          <button  type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
                     place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
                     <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zapisz zmiany
