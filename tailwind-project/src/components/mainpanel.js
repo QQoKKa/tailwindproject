@@ -193,25 +193,33 @@ const handleOpenTaskList = () => {
                 {tasksData && tasksData.length > 0 && (
                   <div className="flex flex-row justify-center space-x-5 ">
                     <div className=" text-center mb-2"><p className="border-b-2 border-infored"> Nazwa<br></br> zadania:</p>
-                      <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
+                      <p>{tasksData
+                          .filter((task) => task.emp_id === "worker1" &&  task.status !== 1)
+                          .reduce((maxPriorityTask, currentTask) => {
                            if (currentTask.status === 1) return maxPriorityTask; 
                            return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).name}</p>
                     </div>
-                    <div className="text-center mb-2" ><p className="border-b-2 border-infored"> Opis <br></br> zadania:</p>
-                      <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
+                    <div className="text-center mb-2" ><p className=" max-w-sm border-b-2 border-infored"> Opis <br></br> zadania:</p>
+                      <p>{tasksData
+                          .filter((task) => task.emp_id === "worker1" && task.status !== 1)
+                          .reduce((maxPriorityTask, currentTask) => {
                            if (currentTask.status === 1) return maxPriorityTask; 
                            return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).description}</p>
                     </div>
-                    <div className="text-center mb-2"> <p className="border-b-2 border-infored">Termin wykonania:</p>
-                      <p>{(tasksData.reduce((maxPriorityTask, currentTask) => {
+                    <div className="text-center mb-2"> <p className="border-b-2 border-infored">Termin <br></br> wykonania:</p>
+                      <p>{(tasksData
+                          .filter((task) => task.emp_id === "worker1" && task.status !== 1)
+                          .reduce((maxPriorityTask, currentTask) => {
                            if (currentTask.status === 1) return maxPriorityTask;
                            return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).deadline)}</p>
                     </div>
-                    <div className="text-center mb-2"> <p className="border-b-2 border-infored">Priorytet zadania:</p>
-                    <p>{renderPriority(tasksData.reduce((maxPriorityTask, currentTask) => {
+                    <div className="text-center mb-2"> <p className="border-b-2 border-infored">Priorytet <br></br> zadania:</p>
+                    <p>{renderPriority(tasksData
+                          .filter((task) => task.emp_id === "worker1" && task.status !== 1)
+                          .reduce((maxPriorityTask, currentTask) => {
                            if (currentTask.status === 1) return maxPriorityTask;
                            return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).priority)}</p>

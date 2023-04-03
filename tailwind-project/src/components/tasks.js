@@ -174,24 +174,26 @@ useEffect(() => {
         }, [selectedTask]);
             //TO-DO create function that gets amount of tasks with status 1, checks how many tasks are made by employee and then sets this amount to employee's tasksDone
             
-              const handleStatus = (id) => {
-                editStatus(id);
-              }
-        
-              const editStatus = (id) => {
-                const docref = doc(db, "tasks", id);
-                updateDoc(docref, {
-                  status: 1,
+            const handleStatus = (id, empId) => {
+              editStatus(id, empId);
+            }
+
+            const editStatus = (id, empId) => {
+              const docref = doc(db, "tasks", id);
+              updateDoc(docref, { status: 1 })
+                .then(() => {
+                  console.log("Document successfully updated!");
+                  const assignedEmp = empData.find((emp) => emp.login === empId);
+                  if (!assignedEmp) return;
+                  const empDocRef = doc(db, "emp", assignedEmp.login);
+                  return updateDoc(empDocRef, { tasks_done: assignedEmp.tasks_done + 1 });
                 })
                 .then(() => {
-                  console.log("Document successfully deleted!");
+                  console.log("Employee tasks_done successfully updated!");
                   window.location.reload();
-                }).catch((error) => {
-                  console.error("Error removing document: ", error);
-                });
-              }
-    
-
+                })
+                .catch((error) => console.error(error));
+            };
 
     return (       
       <>
@@ -241,7 +243,7 @@ useEffect(() => {
                         </td>
                     <td className=' m-2'>
                         {task.status === 0 ? (
-                        <button onClick={() => handleStatus(task.id)}
+                        <button onClick={() => handleStatus(task.id, task.emp_id)}
                         className='mark-as-done-button finish-button group bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
                                    active:bg-red-400 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'>

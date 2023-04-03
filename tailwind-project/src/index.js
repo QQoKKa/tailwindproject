@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from './dbemp';
 
 // async function getDocsFromCollection() {
 //   const docRef = collection(db, "emp");
