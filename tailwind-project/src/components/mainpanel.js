@@ -124,7 +124,7 @@ const handleOpenTaskList = () => {
                         flex flex-auto justify-center items-center"> 
         {showTaskList && (
           <div className="justify-center items-center grid bg-[rgba(0,0,0,0.4)] w-full right-0 h-full absolute z-0">
-            <div className="grid grid-flow-row z-1 h-[600px] w-[1100px] bg-white mr-10 rounded-2xl">
+            <div className="grid grid-flow-row z-1 h-[600px] w-[1100px] bg-white rounded-2xl">
               <div className="border-b-2 border-taskcolor h-fit">
                 <ImCross
                   className="float-left ml-4 mt-4 text-2xl cursor-pointer text-taskcolor hover:text-taskcolorhover"
@@ -135,8 +135,8 @@ const handleOpenTaskList = () => {
                   Twoje zadania
                 </p>
               </div>
-              <div className='overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-taskcolor scrollbar-thumb-rounded-md hover:scrollbar-thumb-taskcolorhover'>
-        <table className='table-auto mx-auto mt-0'>
+              <div className=' overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-taskcolor scrollbar-thumb-rounded-md hover:scrollbar-thumb-taskcolorhover'>
+        <table className='table-auto mx-auto'>
             <thead>
                 <tr>
                     <th className=''>Nazwa</th>
