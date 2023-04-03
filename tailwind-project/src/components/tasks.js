@@ -45,6 +45,29 @@ useEffect(() => {
   });
 }, [])
 
+useEffect(() => {
+  async function updateEmpData() {
+    if (empData.length > 0 && tasksData.length > 0) {
+      const workers = empData.map((emp) => emp.login);
+      const updatedEmpData = await Promise.all(workers.map(async (worker) => {
+        const tasksDone = tasksData.filter(
+          (task) => task.emp_id === worker && task.status === "done"
+        ).length;
+        const emp = empData.find((emp) => emp.login === worker);
+        const updatedEmp = { ...emp, tasks_done: tasksDone };
+        const docRef = doc(db, "emp", emp.id);
+        await updateDoc(docRef, updatedEmp);
+        return updatedEmp;
+      }));
+      setEmpData(updatedEmpData);
+    }
+  }
+
+  updateEmpData().catch((error) => {
+    // Handle any errors that occur
+    console.error(error);
+  });
+}, [empData, tasksData]);
 
 
 const renderPriority = (priority) => {
@@ -74,7 +97,7 @@ const getTaskWorker = (task) => {
   return assignedEmp ? assignedEmp.name + " " + assignedEmp.surname : "Nie przypisano pracownika";
 };
 
-
+//create code that goes trought tasksData and gets tasksData.emp_id = empData.login = worker1 and then finds how many tasks are done for assigned worker and then adds it to the table empData.tasks_done
 
 
 const renderStatus = (status) => {
@@ -177,18 +200,18 @@ useEffect(() => {
         <div className="bg-gray-100 min-h-screen p-4  
         flex flex-auto justify-center items-center"> 
         <div className=" bg-white h-[600px] w-[1000px] ml-32 shadow-2xl rounded-2xl border-2">
-        <div className='border-b-4 border-btnpurple grid'>
-        <MdTaskAlt className='' size={100} color='#ECC1FF' />
+        <div className='border-b-4 border-taskcolor grid'>
+        <MdTaskAlt className='' size={100} color='#FF3431' />
         <div className='grid grid-flow-col'>
-        <button onClick={movepanel} className=' relative group ml-8 justify-self-start place-self-start bg-btnpurple hover:bg-btnpurplehover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
+        <button onClick={movepanel} className=' relative group ml-8 justify-self-start place-self-start bg-taskcolor hover:bg-taskcolorhover py-2 px-2 rounded-lg over:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] 
                                    focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 
-                                   active:bg-btnpurpleclick active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><TbTextPlus size={"32px"} color='white'></TbTextPlus>
+                                   active:bg-[#c23a38] active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]'><TbTextPlus size={"32px"} color='white'></TbTextPlus>
                                     <span className='tooltip-btn group-hover:scale-100'>Dodaj zadanie</span>
                                    </button>
         <p className='justify-self-end place-self-end text-5xl  mr-4 mb-2'> Zadania: {totalTasks}</p>
         </div>
         </div>
-        <div className='overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-btnpurple scrollbar-thumb-rounded-md hover:scrollbar-thumb-btnpurplehover'>
+        <div className='overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-taskcolor scrollbar-thumb-rounded-md hover:scrollbar-thumb-taskcolorhover'>
         <table className='table-auto mx-auto'>
             <thead>
                 <tr>

@@ -1,5 +1,6 @@
 import {IoMdCheckmark} from "react-icons/io";
 import {useEffect, useState } from "react";
+import {IoHappy} from "react-icons/io5";
 import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
 
 
@@ -94,18 +95,11 @@ const renderPriority = (priority) => {
         <div className="bg-gray-100 min-h-screen p-4  
                         flex flex-auto justify-center items-center"> 
             <div className=" h-[600px] w-[1100px] ml-32 grid grid-cols-2 grid-rows-2  gap-4">
-                <div className="gridpanel flex"> Zyski firmy
-                <div><br></br> ten miesiąc {this_month}zł</div>
-                <div><br></br> poprzedni miesiąc {last_month}zł</div>
-                <div><br></br> Zysk {calculateProfit()}zł</div>
-                    <div className="bg-red-500 w-[200px] h-[200px] flex justify-center items-center place-self-center ml-28  ">
-                        <div className="bg-blue-500 w-[150px] h-[150px]
-                                          rounded-full flex items-center justify-center
-                                        text-white font-bold text-3xl 
-                                        border-green-700 border-4">{calculateProfitPercent()}%</div>
-                    </div>
+                <div className=" text-center grind gridpanel"> <p> Witaj {empData && empData[0] ? empData[0].name : "brak danych"}</p> <br></br>
+                <div className="flex flex-col justify-center items-center">
+                  </div>
                 </div>
-                <div className="gridpanel"> Najlepszy pracownik 
+                <div className="gridpanel"> <p className=" mb-9"> Najlepszy pracownik</p>  
                 <br></br>
                 {best_employee? (
                     <>

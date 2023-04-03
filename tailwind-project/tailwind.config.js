@@ -15,7 +15,9 @@ module.exports = {
         'btngreen': '#07ba2b',
         'btnpurple': '#E2A0FF',
         'btnpurplehover': '#A970C2',
-        'btnpurpleclick': '#ECC1FF'
+        'btnpurpleclick': '#ECC1FF',
+        'taskcolor' : '#FF3431',
+        'taskcolorhover' : '#ad1e1c'
       },
     },
   },

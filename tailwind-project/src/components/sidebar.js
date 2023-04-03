@@ -1,6 +1,6 @@
-import {BsFillPeopleFill} from 'react-icons/bs';
+import {BsFillPeopleFill,BsDisplay} from 'react-icons/bs';
 import {MdAttachMoney} from 'react-icons/md';
-import {FaPoo, FaTasks} from 'react-icons/fa';
+import { FaTasks} from 'react-icons/fa';
 import {RxFace}    from 'react-icons/rx';
 import { useEffect, useState } from 'react';
 import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
@@ -38,8 +38,8 @@ const Sidebar = () => {
             </div>
             {userData && <p className='text-center'>{userData[0].name + " " +userData[0].surname}</p>}
             <div className='h-1 bg-infored'></div>
-           <a href='/'> <SidebarIcon Icon={<FaPoo size="50"/>} text='główny panel'/> </a>
-           <a href='/finances'> <SidebarIcon Icon={<MdAttachMoney size="50"/>} text='finanse'/></a>
+           <a href='/'> <SidebarIcon Icon={<BsDisplay size="50"/>} text='główny panel'/> </a>
+           {/* <a href='/finances'> <SidebarIcon Icon={<MdAttachMoney size="50"/>} text='finanse'/></a> */}
            <a href='/employees'> <SidebarIcon Icon={<BsFillPeopleFill size="50"/>} text='pracownicy'/> </a>
            <a href='/tasks'> <SidebarIcon Icon={<FaTasks size="50"/>} text='zadania'/> </a>
         </div>
