@@ -306,12 +306,7 @@ useEffect(() => {
                  className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' 
                  type='number' name='salary' defaultValue={selectedEmployee ? selectedEmployee.salary : ""} ></input>
           </div>
-          <div className='grid grid-flow-col'>
-          <label className='font-bold text-lg text-white ml-2'>Hasło:</label>
-          <input 
-                 className='mr-4 justify-self-end bg-sidebarblue  border-4 border-sidebarblue border-b-infored  rounded-lg ml-2 text-white focus:bg-purple-500' 
-                 type='text' name='password' defaultValue={selectedEmployee ? selectedEmployee.password : ""} ></input>
-          </div>
+
           <button  type='submit'  class=" justify-self-center relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
                     font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
                     place-self-end transition duration-150 active:bg-green-200 hover:scale-105">

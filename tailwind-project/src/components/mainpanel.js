@@ -135,7 +135,7 @@ const handleOpenTaskList = () => {
                   Twoje zadania
                 </p>
               </div>
-              <div className=' overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-taskcolor scrollbar-thumb-rounded-md hover:scrollbar-thumb-taskcolorhover'>
+              <div className=' mt-[-240px] overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-track-none  scrollbar-thumb-taskcolor scrollbar-thumb-rounded-md hover:scrollbar-thumb-taskcolorhover'>
         <table className='table-auto mx-auto'>
             <thead>
                 <tr>
@@ -192,7 +192,7 @@ const handleOpenTaskList = () => {
                 <div className="gridpanel flex flex-col"> <p className="mb-8" > Aktualne zadanie dla ciebie</p> <br></br>
                 {tasksData && tasksData.length > 0 && (
                   <div className="flex flex-row justify-center space-x-5 ">
-                    <div className=" text-center mb-2"><p className="border-b-2 border-infored"> Nazwa zadania:</p>
+                    <div className=" text-center mb-2"><p className="border-b-2 border-infored"> Nazwa<br></br> zadania:</p>
                       <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
                            if (currentTask.status === 1) return maxPriorityTask; 
                            return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
