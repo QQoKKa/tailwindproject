@@ -97,8 +97,6 @@ const getTaskWorker = (task) => {
   return assignedEmp ? assignedEmp.name + " " + assignedEmp.surname : "Nie przypisano pracownika";
 };
 
-//create code that goes trought tasksData and gets tasksData.emp_id = empData.login = worker1 and then finds how many tasks are done for assigned worker and then adds it to the table empData.tasks_done
-
 
 const renderStatus = (status) => {
   if (status === 0) {
