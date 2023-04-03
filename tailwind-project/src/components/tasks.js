@@ -35,9 +35,7 @@ useEffect(() => {
 
     const tasksData = [];
     tasksSnap.forEach((doc) => {
-      tasksData.push({id: doc.id, ...doc.data()});
-      console.log(doc.data)
-    });
+      tasksData.push({id: doc.id, ...doc.data()});    });
     setTasksData(tasksData);
   }
 

@@ -5,7 +5,7 @@ import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbe
 
 const MainPanel = () => {
     const [empData, setEmpData] = useState(null);
-    const [tasksData, setTasksData] = useState(null);
+    const [tasksData, setTasksData] = useState([]);
 
 
 useEffect(() => {
@@ -120,36 +120,32 @@ const renderPriority = (priority) => {
                 <div className="gridpanel flex flex-col"> Aktualne zadanie dla ciebie <br></br>
                 {tasksData && tasksData.length > 0 && (
                   <div className="flex flex-row justify-center space-x-5 ">
-                    <div className="text-center mb-2">Nazwa zadania:
+                    <div className=" text-center mb-2"><p className="border-b-2 border-infored"> Nazwa zadania:</p>
                       <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
-                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                           if (currentTask.status === 1) return maxPriorityTask; 
+                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).name}</p>
                     </div>
-                    <div className="text-center mb-2" >Opis zadania:
+                    <div className="text-center mb-2" ><p className="border-b-2 border-infored"> Opis <br></br> zadania:</p>
                       <p>{tasksData.reduce((maxPriorityTask, currentTask) => {
-                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                           if (currentTask.status === 1) return maxPriorityTask; 
+                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).description}</p>
                     </div>
-                    <div className="text-center mb-2">Termin wykonania:
-                      <p>{new Date(tasksData.reduce((maxPriorityTask, currentTask) => {
-                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
-                      }).deadline * 1000).toLocaleString()}</p>
+                    <div className="text-center mb-2"> <p className="border-b-2 border-infored">Termin wykonania:</p>
+                      <p>{(tasksData.reduce((maxPriorityTask, currentTask) => {
+                           if (currentTask.status === 1) return maxPriorityTask;
+                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                      }).deadline)}</p>
                     </div>
-                    <div className="text-center mb-2">Priorytet:
+                    <div className="text-center mb-2"> <p className="border-b-2 border-infored">Priorytet zadania:</p>
                     <p>{renderPriority(tasksData.reduce((maxPriorityTask, currentTask) => {
-                          return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
+                           if (currentTask.status === 1) return maxPriorityTask;
+                           return currentTask.priority > maxPriorityTask.priority ? currentTask : maxPriorityTask;
                       }).priority)}</p>
                     </div>
                   </div>
               )}
-                
-                <button  class=" group relative mt-16 text-white bg-green-600 hover:bg-green-700 shadow-lg
-                    font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600
-                    place-self-end transition duration-150 active:bg-green-200 hover:scale-105">
-                    <IoMdCheckmark className="inline-block mr-2 " color="white" size="20" /> Zakończ
-                    <span className='tooltip-btn group-hover:scale-100'>Zakończ zadanie</span>
-                </button>
-
                 </div>
                     <div className="gridpanel"> Twoje wyniki <br></br>
                     <div className="flex flex-row justify-center space-x-5 ">
