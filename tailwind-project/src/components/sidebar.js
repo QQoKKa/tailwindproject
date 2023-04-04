@@ -4,6 +4,7 @@ import { FaTasks} from 'react-icons/fa';
 import {RxFace}    from 'react-icons/rx';
 import { useEffect, useState } from 'react';
 import {db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc} from '../dbemp';
+import avatar from './images/zdj.jpg';
 
 
 const Sidebar = () => {
@@ -30,12 +31,14 @@ const Sidebar = () => {
         <div className="fixed top-0 left-0 h-screen w-44
                         flex flex-col
                         bg-sidebarblue text-white ">
-            <div className='relative flex items-center justify-center
+            {/* <div className='relative flex items-center justify-center
                             h-36 w-36 mt-6 mb-2 mx-auto
                             shadow-lg
                             bg-blue-900 text-infored'>
                 <RxFace size="60" className="text-center"/>
-            </div>
+            </div> */}
+            <img className='h-36 w-36 mt-6 mb-2 mx-auto
+                            shadow-lg rounded-full object-cover cover object-top' src={avatar} alt='not found'></img>
             {userData && <p className='text-center'>{userData[0].name + " " +userData[0].surname}</p>}
             <div className='h-1 bg-infored'></div>
            <a href='/'> <SidebarIcon Icon={<BsDisplay size="50"/>} text='główny panel'/> </a>
